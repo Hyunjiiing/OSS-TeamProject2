@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: Text('식재료를 입력하세요'),
+            title: Text('식재료를 입력하세요',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            centerTitle: true,
             backgroundColor: Color(0xffFF923F),
             elevation: 0,
           ),
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
                       labelText: '식재료'
                   ),
                 ),
+                Text('레시피 추천',
+                    style: TextStyle(height: 2.0, fontSize: 18, fontWeight: FontWeight.bold)),
+                Icon(Icons.arrow_downward),
               ],
             ),
           ),
