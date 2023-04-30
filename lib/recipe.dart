@@ -19,12 +19,14 @@ class MyApp extends StatelessWidget {
             padding:EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '식재료:'
-                    )
-                )
+                TextFormField(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.dining_outlined),
+                      prefixIcon: Icon(Icons.dining),
+                      hintText: 'input',
+                      labelText: '식재료'
+                  ),
+                ),
               ],
             ),
           ),
