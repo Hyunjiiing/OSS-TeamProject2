@@ -13,7 +13,14 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           body: Column(
             children: [
-              Text('오늘의 식단 기록하기'),
+              Text(
+                "오늘의 식단 기록하기",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black,
+                ),
+              ),
               Text('0000년 00월 00일'),
               TextButton(
                   style: ButtonStyle(
@@ -39,6 +46,7 @@ class MyApp extends StatelessWidget {
                 onPressed: () {},
                 child: Text('저녁'),),
               Text('칼로리: '),
+              Text('총 칼로리: '),
             ],
           )
       ),
