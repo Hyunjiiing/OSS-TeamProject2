@@ -65,7 +65,19 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           return events[day] ?? [];
         },
         calendarBuilders: CalendarBuilders(
-            markerBuilder: (context, day, events)
+            markerBuilder: (context, day, events) {
+              if (events.isNotEmpty) {
+                return Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF923F),
+                  ),
+                );
+              }
+              return null;
+            },
           ),
         ],
       ),
