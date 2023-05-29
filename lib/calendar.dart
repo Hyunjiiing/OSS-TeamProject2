@@ -114,3 +114,12 @@ Widget build(BuildContext context) {
   },
   ),
   ),
+  Expanded(
+  child: Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: TextField(
+  controller: memoController,
+  decoration: InputDecoration(
+  hintText: '메모를 입력하세요',
+  border: OutlineInputBorder(),
+  ),
