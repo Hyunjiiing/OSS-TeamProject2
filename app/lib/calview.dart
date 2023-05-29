@@ -27,3 +27,10 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     DateTime.now().month,
     DateTime.now().day,
   );
+  DateTime focusedDay = DateTime.now();
+  Map<DateTime, List<String>> events = {};
+
+  TextEditingController menstrualPeriodController = TextEditingController();
+  TextEditingController nutritionalSupplementsController = TextEditingController();
+  TextEditingController conditionController = TextEditingController();
+  TextEditingController waterIntakeController = TextEditingController();
