@@ -131,3 +131,18 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     },
     ),
     ),
+    Expanded(
+    child: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Text('월경기간'),
+    TextField(
+    controller: menstrualPeriodController,
+    onChanged: (value) {
+    setState(() {
+    events[selectedDay]?[0] = value;
+    });
+    },
+    ),
