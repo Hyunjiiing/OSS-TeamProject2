@@ -155,14 +155,6 @@ class MyApp extends StatelessWidget {
                         primary: Color(0xffFF923F),
                       ),
                     ),
-                    SizedBox(width: 40),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('응모하기'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xffFF923F),
-                      ),
-                    ),
                   ],
                 ),
                 SizedBox(height: 10),
