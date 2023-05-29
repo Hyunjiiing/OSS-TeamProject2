@@ -64,4 +64,15 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     },
     calendarBuilders: CalendarBuilders(
     markerBuilder: (context, day, events) {
-    if (events.isNotEmpty) {}
+    if (events.isNotEmpty) {
+    return Container(
+    width: 6,
+    height: 6,
+    decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: const Color(0xFFFF923F),
+    ),
+    );
+    }
+    return null;
+    },
