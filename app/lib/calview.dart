@@ -54,3 +54,17 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       ];
     });
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Column(
+        children: [
+        TableCalendar(
+        locale: 'ko_KR',
+        firstDay: DateTime.utc(2021, 10, 16),
+    lastDay: DateTime.utc(2030, 3, 14),
+    focusedDay: focusedDay,
+    selectedDayPredicate: (DateTime day) {
+    return isSameDay(selectedDay, day);
+    },
