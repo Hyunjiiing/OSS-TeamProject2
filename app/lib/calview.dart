@@ -101,7 +101,19 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     shape: BoxShape.circle,
     color: const Color(0xFFFF923F),
     ),
-   
+      margin: const EdgeInsets.all(8),
+      alignment: Alignment.center,
+      child: Text(
+        day.day.toString(),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+    },
+        ),
+      ),
           ),
         ],
       ),
