@@ -61,11 +61,14 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                 memoController.text = events[selectedDay]?.join('\n') ?? '';
               });
             },
+        eventLoader: (day) {
+          return events[day] ?? [];
+        },
+        calendarBuilders: CalendarBuilders(
+            markerBuilder: (context, day, events)
           ),
         ],
       ),
     );
   }
 }
-
-
