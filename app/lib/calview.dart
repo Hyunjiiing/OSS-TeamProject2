@@ -40,3 +40,19 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     memoController.dispose();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          TableCalendar(
+            locale: 'ko_KR',
+            firstDay: DateTime.utc(2021, 10, 16),
+            lastDay: DateTime.utc(2030, 3, 14),
+          ),
+        ],
+      ),
+    );
+  }
+}
