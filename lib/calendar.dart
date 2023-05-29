@@ -52,3 +52,10 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     selectedDayPredicate: (DateTime day) {
     return isSameDay(selectedDay, day);
     },
+    onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+    this.selectedDay = selectedDay;
+    this.focusedDay = focusedDay;
+    memoController.text = events[selectedDay]?.join('\n') ?? '';
+    });
+    },
