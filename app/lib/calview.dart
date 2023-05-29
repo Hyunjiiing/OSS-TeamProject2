@@ -33,12 +33,29 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   DateTime focusedDay = DateTime.now();
   Map<DateTime, List<String>> events = {};
 
-  TextEditingController memoController = TextEditingController();
+  TextEditingController menstrualPeriodController = TextEditingController();
+  TextEditingController nutritionalSupplementsController = TextEditingController();
+  TextEditingController conditionController = TextEditingController();
+  TextEditingController waterIntakeController = TextEditingController();
 
   @override
   void dispose() {
-    memoController.dispose();
+    menstrualPeriodController.dispose();
+    nutritionalSupplementsController.dispose();
+    conditionController.dispose();
+    waterIntakeController.dispose();
     super.dispose();
+  }
+
+  void saveEvent() {
+    setState(() {
+      events[selectedDay] = [
+        menstrualPeriodController.text,
+        nutritionalSupplementsController.text,
+        conditionController.text,
+        waterIntakeController.text,
+      ];
+    });
   }
 
   @override
@@ -58,7 +75,10 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
               setState(() {
                 this.selectedDay = selectedDay;
                 this.focusedDay = focusedDay;
-                memoController.text = events[selectedDay]?.join('\n') ?? '';
+                menstrualPeriodController.text = events[selectedDay]?[0] ?? '';
+                nutritionalSupplementsController.text = events[selectedDay]?[1] ?? '';
+                conditionController.text = events[selectedDay]?[2] ?? '';
+                waterIntakeController.text = events[selectedDay]?[3] ?? '';
               });
             },
             eventLoader: (day) {
@@ -117,22 +137,57 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: memoController,
-                decoration: InputDecoration(
-                  hintText: '메모를 입력하세요',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay] = value.isNotEmpty ? value.split('\n') : [];
-                  });
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('월경기간'),
+                  TextField(
+                    controller: menstrualPeriodController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[0] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text('섭취한 영양제'),
+                  TextField(
+                    controller: nutritionalSupplementsController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[1] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text('컨디션'),
+                  TextField(
+                    controller: conditionController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[2] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text('섭취한 물의 양'),
+                  TextField(
+                    controller: waterIntakeController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[3] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: saveEvent,
+                    child: Text('저장'),
+                  ),
+                ],
               ),
             ),
           ),
-          if (events[selectedDay]?.isNotEmpty == true)
-            Text('메모: ${events[selectedDay]?.join('\n')}'), // 선택한 날짜의 메모 표시
         ],
       ),
     );
