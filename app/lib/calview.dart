@@ -73,5 +73,8 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     this.selectedDay = selectedDay;
     this.focusedDay = focusedDay;
     menstrualPeriodController.text = events[selectedDay]?[0] ?? '';
+    nutritionalSupplementsController.text = events[selectedDay]?[1] ?? '';
+    conditionController.text = events[selectedDay]?[2] ?? '';
+    waterIntakeController.text = events[selectedDay]?[3] ?? '';
     });
     },
