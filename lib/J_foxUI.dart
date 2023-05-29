@@ -142,7 +142,7 @@ class MyApp extends StatelessWidget {
                                   },
                                   child: Text('확인'),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color(0xffFF923F),
+                                    backgroundColor: Color(0xffFF923F),
                                   ),
                                 ),
                               ],
@@ -152,7 +152,7 @@ class MyApp extends StatelessWidget {
                       },
                       child: Text('운동 입력'),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xffFF923F),
+                        backgroundColor: Color(0xffFF923F),
                       ),
                     ),
                   ],
@@ -188,7 +188,7 @@ class MyApp extends StatelessWidget {
                               },
                               child: Text('확인'),
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xffFF923F),
+                                backgroundColor: Color(0xffFF923F),
                               ),
                             ),
                           ],
@@ -198,7 +198,7 @@ class MyApp extends StatelessWidget {
                   },
                   child: Text('하루 소모 칼로리 입력'),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xffFF923F),
+                    backgroundColor: Color(0xffFF923F),
                   ),
                 ),
               ],
