@@ -70,7 +70,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
                         _showMealSelectionDialog();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xffFF923F),
+                        backgroundColor: Color(0xffFF923F),
                       ),
                     ),
                   ],
@@ -81,7 +81,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
                     _showFoodSearchDialog();
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xffFF923F),
+                    backgroundColor: Color(0xffFF923F),
                   ),
                 ),
               ],
@@ -215,7 +215,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xffFF923F),
+                  backgroundColor: Color(0xffFF923F),
                 ),
               ),
             ],
