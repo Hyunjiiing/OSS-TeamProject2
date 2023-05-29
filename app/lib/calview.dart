@@ -29,3 +29,14 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     DateTime.now().month,
     DateTime.now().day,
   );
+
+  DateTime focusedDay = DateTime.now();
+  Map<DateTime, List<String>> events = {};
+
+  TextEditingController memoController = TextEditingController();
+
+  @override
+  void dispose() {
+    memoController.dispose();
+    super.dispose();
+  }
