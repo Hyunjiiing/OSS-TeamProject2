@@ -112,3 +112,10 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     ),
     );
     },
+    todayBuilder: (context, day, events) {
+    return Container(
+    decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: const Color(0xFFFF923F),
+    ),
+    margin: const EdgeInsets.all(8),
