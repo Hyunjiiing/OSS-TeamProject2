@@ -70,8 +70,18 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
             selectedDayPredicate: (DateTime day) {
               return isSameDay(selectedDay, day);
             },
+            onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+              setState(() {
+                this.selectedDay = selectedDay;
+                this.focusedDay = focusedDay;
+                menstrualPeriodController.text = events[selectedDay]?[0] ?? '';
+              });
+            },
+            eventLoader: (day) {
+              return events[day] ?? [];
+            },
           ),
-         
+
         ],
       ),
     );
