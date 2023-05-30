@@ -158,7 +158,16 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   });
                 },
               ),
-              
+              SizedBox(height: 16),
+              Text('컨디션'),
+              TextField(
+                controller: conditionController,
+                onChanged: (value) {
+                  setState(() {
+                    events[selectedDay]?[2] = value;
+                  });
+                },
+              ),
               ),
             ),
           ),
