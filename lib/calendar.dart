@@ -168,6 +168,16 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   });
                 },
               ),
+              SizedBox(height: 16),
+              Text('섭취한 물의 양'),
+              TextField(
+                controller: waterIntakeController,
+                onChanged: (value) {
+                  setState(() {
+                    events[selectedDay]?[3] = value;
+                  });
+                },
+              ),
               ),
             ),
           ),
