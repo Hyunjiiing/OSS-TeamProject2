@@ -16,3 +16,12 @@ rf = RandomForestClassifier()
 
 # 모델 훈련
 rf.fit(train_X, train_y)
+
+from sklearn.metrics import accuracy_score
+
+# 테스트 세트로 예측
+y_pred = rf.predict(test_X) #test_X에 사용자의 데이터를 입력하는 부분이 되는 것
+
+# 정확도 평가
+accuracy = accuracy_score(test_y, y_pred)
+print("Accuracy:", accuracy)
