@@ -105,7 +105,13 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
               ),
               margin: const EdgeInsets.all(8),
               alignment: Alignment.center,
-
+              child: Text(
+                day.day.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             );
           },
           ),
