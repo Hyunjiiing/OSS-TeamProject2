@@ -21,5 +21,11 @@ class TableCalendarScreen extends StatefulWidget {
   @override
   State<TableCalendarScreen> createState() => _TableCalendarScreenState();
 }
+class _TableCalendarScreenState extends State<TableCalendarScreen> {
+  DateTime selectedDay = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
 DateTime focusedDay = DateTime.now();
 Map<DateTime, List<String>> events = {};
