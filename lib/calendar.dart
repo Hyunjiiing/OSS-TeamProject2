@@ -148,7 +148,17 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       });
                     },
                   ),
-
+              SizedBox(height: 16),
+              Text('섭취한 영양제'),
+              TextField(
+                controller: nutritionalSupplementsController,
+                onChanged: (value) {
+                  setState(() {
+                    events[selectedDay]?[1] = value;
+                  });
+                },
+              ),
+              
               ),
             ),
           ),
