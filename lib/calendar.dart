@@ -46,3 +46,13 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     waterIntakeController.dispose();
     super.dispose();
   }
+  void saveEvent() {
+    setState(() {
+      events[selectedDay] = [
+        menstrualPeriodController.text,
+        nutritionalSupplementsController.text,
+        conditionController.text,
+        waterIntakeController.text,
+      ];
+    });
+  }
