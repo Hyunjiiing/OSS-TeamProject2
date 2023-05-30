@@ -178,6 +178,15 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   });
                 },
               ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: saveEvent,
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFFFF923F),
+                    ),
+                    child: Text('저장'),
+                  ),
+                ],
               ),
             ),
           ),
