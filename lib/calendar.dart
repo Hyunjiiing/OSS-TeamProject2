@@ -37,3 +37,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   TextEditingController nutritionalSupplementsController = TextEditingController();
   TextEditingController conditionController = TextEditingController();
   TextEditingController waterIntakeController = TextEditingController();
+
+  @override
+  void dispose() {
+    menstrualPeriodController.dispose();
+    nutritionalSupplementsController.dispose();
+    conditionController.dispose();
+    waterIntakeController.dispose();
+    super.dispose();
+  }
