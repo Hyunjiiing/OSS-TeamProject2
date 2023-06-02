@@ -249,6 +249,35 @@ class _DietRecordPageState extends State<DietRecordPage> {
     );
   }
 
+  void _searchFood(String keyword) async {
+    // API 요청을 위한 URL 생성
+    String url = '$baseUrl/1/5/DESC_KOR=$keyword';
+
+    // API 호출
+    http.Response response = await http.get(Uri.parse(url));
+
+    // XML 파싱
+    if (response.statusCode == 200) {
+      xml.XmlDocument xmlDocument = xml.XmlDocument.parse(response.body);
+
+      List<String> results = [];
+      Iterable<xml.XmlElement> elements =
+      xmlDocument.findAllElements('row');
+
+      for (var element in elements) {
+        String foodName =
+            element.findElements('DESC_KOR').first.innerText; // 음식 이름 가져오기
+        results.add(foodName);
+      }
+
+      setState(() {
+        foodList = results;
+      });
+    } else {
+      print('API 요청에 실패하였습니다.');
+    }
+  }
+
   void _showSurveyDialog() {
     showDialog(
       context: context,
