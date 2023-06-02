@@ -38,6 +38,8 @@ class _DietRecordPageState extends State<DietRecordPage> {
 
   @override
   Widget build(BuildContext context) {
+    int totalCalories = calories.isNotEmpty ? calories.reduce((a, b) => a + b) : 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFF923F),
