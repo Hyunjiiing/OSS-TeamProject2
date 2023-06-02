@@ -25,16 +25,19 @@ class _DietRecordPageState extends State<DietRecordPage> {
   String memo = '';
   List<int> calories = [];
   List<String> foodList = [];
+  double totalCalories = 0;
+  double totalCarbohydrate = 0;
+  double totalProtein = 0;
+  double totalFat = 0;
+  double totalSugar = 0;
+  double totalSodium = 0;
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
-  final String baseUrl =
-      'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
+  final String baseUrl = 'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
 
   @override
   Widget build(BuildContext context) {
-    int totalCalories = calories.isNotEmpty ? calories.reduce((a, b) => a + b) : 0;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFF923F),
@@ -128,7 +131,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           onTap: () {
                             setState(() {
                               // 선택한 음식을 식단에 추가
-                              calories.add(100); // 예시로 100 칼로리 추가
+                              _fetchFoodInfo(foodList[index]);
                             });
                           },
                         );
@@ -140,7 +143,27 @@ class _DietRecordPageState extends State<DietRecordPage> {
             ),
             SizedBox(height: 16),
             Text(
-              '총 칼로리: $totalCalories',
+              '총 칼로리: ${totalCalories.toStringAsFixed(1)} kcal',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '총 탄수화물: ${totalCarbohydrate.toStringAsFixed(1)} g',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '총 단백질: ${totalProtein.toStringAsFixed(1)} g',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '총 지방: ${totalFat.toStringAsFixed(1)} g',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '총 당류: ${totalSugar.toStringAsFixed(1)} g',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '총 나트륨: ${totalSodium.toStringAsFixed(1)} mg',
               style: TextStyle(fontSize: 18),
             ),
           ],
@@ -210,25 +233,25 @@ class _DietRecordPageState extends State<DietRecordPage> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-            width: 300, // 원하는 너비 설정
-            height: 400, // 원하는 높이 설정
-            child: Dialog(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    onChanged: (value) {
-                      _searchFood(value);
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '음식을 검색해주세요',
-                    ),
+          width: 300, // 원하는 너비 설정
+          height: 400, // 원하는 높이 설정
+          child: Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  onChanged: (value) {
+                    _searchFood(value);
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '음식을 검색해주세요',
                   ),
-                  SizedBox(height: 16),
-                  ListView.builder(
+                ),
+                SizedBox(height: 16),
+                Expanded(
+                  child: ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
                     itemCount: foodList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -236,14 +259,16 @@ class _DietRecordPageState extends State<DietRecordPage> {
                         onTap: () {
                           setState(() {
                             // 선택한 음식을 식단에 추가
+                            _fetchFoodInfo(foodList[index]);
                           });
                         },
                       );
                     },
                   ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -261,17 +286,48 @@ class _DietRecordPageState extends State<DietRecordPage> {
       xml.XmlDocument xmlDocument = xml.XmlDocument.parse(response.body);
 
       List<String> results = [];
-      Iterable<xml.XmlElement> elements =
-      xmlDocument.findAllElements('row');
+      Iterable<xml.XmlElement> elements = xmlDocument.findAllElements('row');
 
       for (var element in elements) {
-        String foodName =
-            element.findElements('DESC_KOR').first.innerText; // 음식 이름 가져오기
+        String foodName = element.findElements('DESC_KOR').first.innerText; // 음식 이름 가져오기
         results.add(foodName);
       }
 
       setState(() {
         foodList = results;
+      });
+    } else {
+      print('API 요청에 실패하였습니다.');
+    }
+  }
+
+  void _fetchFoodInfo(String foodName) async {
+    // API 요청을 위한 URL 생성
+    String url = '$baseUrl/1/1/DESC_KOR=$foodName';
+
+    // API 호출
+    http.Response response = await http.get(Uri.parse(url));
+
+    // XML 파싱
+    if (response.statusCode == 200) {
+      xml.XmlDocument xmlDocument = xml.XmlDocument.parse(response.body);
+
+      xml.XmlElement element = xmlDocument.findAllElements('row').first;
+      double kcal = double.tryParse(element.findElements('NUTR_CONT1').first.innerText) ?? 0;
+      double carbohydrate = double.tryParse(element.findElements('NUTR_CONT2').first.innerText) ?? 0;
+      double protein = double.tryParse(element.findElements('NUTR_CONT3').first.innerText) ?? 0;
+      double fat = double.tryParse(element.findElements('NUTR_CONT4').first.innerText) ?? 0;
+      double sugar = double.tryParse(element.findElements('NUTR_CONT5').first.innerText) ?? 0;
+      double sodium = double.tryParse(element.findElements('NUTR_CONT6').first.innerText) ?? 0;
+
+      setState(() {
+        calories.add(kcal.round());
+        totalCalories += kcal;
+        totalCarbohydrate += carbohydrate;
+        totalProtein += protein;
+        totalFat += fat;
+        totalSugar += sugar;
+        totalSodium += sodium;
       });
     } else {
       print('API 요청에 실패하였습니다.');
