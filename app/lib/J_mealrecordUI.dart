@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart' as xml;
 
 void main() {
   runApp(MyApp());
@@ -207,14 +209,41 @@ class _DietRecordPageState extends State<DietRecordPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('음식 검색'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 음식 검색 관련 위젯 추가
-            ],
-          ),
+        return Container(
+            width: 300, // 원하는 너비 설정
+            height: 400, // 원하는 높이 설정
+            child: Dialog(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      _searchFood(value);
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '음식을 검색해주세요',
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: foodList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(foodList[index]),
+                        onTap: () {
+                          setState(() {
+                            // 선택한 음식을 식단에 추가
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
         );
       },
     );
