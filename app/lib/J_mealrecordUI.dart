@@ -232,10 +232,10 @@ class _DietRecordPageState extends State<DietRecordPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          width: 300, // 원하는 너비 설정
-          height: 400, // 원하는 높이 설정
-          child: Dialog(
+        return Dialog(
+          child: Container(
+            width: 300, // 원하는 너비 설정
+            height: 400, // 원하는 높이 설정
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -274,6 +274,8 @@ class _DietRecordPageState extends State<DietRecordPage> {
     );
   }
 
+
+
   void _searchFood(String keyword) async {
     // API 요청을 위한 URL 생성
     String url = '$baseUrl/1/5/DESC_KOR=$keyword';
@@ -300,6 +302,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
       print('API 요청에 실패하였습니다.');
     }
   }
+
 
   void _fetchFoodInfo(String foodName) async {
     // API 요청을 위한 URL 생성
