@@ -80,6 +80,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   backgroundImage: AssetImage('assets/user_photo.jpg'),
                   radius: 50,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '사용자 이름: 오우아',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      '체중: 57kg',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
