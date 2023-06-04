@@ -233,8 +233,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            SizedBox(height: 30),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '메인 페이지',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.recommend),
+            label: '레시피 추천',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: '캘린더 뷰',
+          ),
+        ],
+        selectedItemColor: Color(0xFFff923f),
+        onTap: (index) {
+          // 화면 이동 처리 구현 (메인 페이지, 레시피 추천 페이지, 캘린더 뷰 페이지)
+        },
       ),
     );
   }
