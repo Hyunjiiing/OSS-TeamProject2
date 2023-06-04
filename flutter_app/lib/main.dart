@@ -177,6 +177,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: Text('간식!'),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFff923f),
+                    primary: Colors.blue,
+                    onPrimary: Colors.white,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // 버튼이 눌렸을 때 수행할 작업
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                  },
+                  child: Text('체중 그래프!'),
+                  style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
                     onPrimary: Colors.white,
                     elevation: 4,
