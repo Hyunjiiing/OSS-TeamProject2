@@ -42,30 +42,49 @@ class _MyHomePageState extends State<MyHomePage> {
             // 설정 페이지로 이동
           },
         ),
-          actions: [
-            Container(
-                margin: EdgeInsets.all(10),
-                child: TextButton(
-                  onPressed: () {
-                    // 버튼이 눌렸을 때 수행할 작업
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
-                  },
-                  child: Text('레벨업 하러 가기!', style: TextStyle(
+        actions: [
+          Container(
+              margin: EdgeInsets.all(10),
+              child: TextButton(
+                onPressed: () {
+                  // 버튼이 눌렸을 때 수행할 작업
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                },
+                child: Text(
+                  '레벨업 하러 가기!',
+                  style: TextStyle(
                     color: Colors.white,
-                  ),),
-                  style: TextButton.styleFrom(
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 1,
-                    ),
-                    primary: Colors.black,
-                    backgroundColor: Color(0xFFff923f),
-                    padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 15),
                   ),
-                )
-            )],
+                ),
+                style: TextButton.styleFrom(
+                  side: BorderSide(
+                    color: Colors.white,
+                    width: 1,
+                  ),
+                  primary: Colors.black,
+                  backgroundColor: Color(0xFFff923f),
+                  padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 15),
+                ),
+              ))
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage('assets/user_photo.jpg'),
+                  radius: 50,
+                ),
+              ],
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
