@@ -111,8 +111,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 500,
                 height: 0.2,
                 child: Divider(color: Colors.grey, thickness: 1.0)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // 버튼이 눌렸을 때 수행할 작업
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+              },
+              child: Text('아침!'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFff923f),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding:
+                EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+              ),
+            ),
           ],
         ),
+        ],
+      ),
       ),
     );
   }
