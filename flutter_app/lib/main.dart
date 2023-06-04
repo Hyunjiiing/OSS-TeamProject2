@@ -99,6 +99,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            Container(
+                width: 500,
+                height: 0.2,
+                child: Divider(color: Colors.grey, thickness: 1.0)),
+            Text(
+              '먹어봤자 다 아는맛이다.. 오늘도 화이팅이야!',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Container(
+                width: 500,
+                height: 0.2,
+                child: Divider(color: Colors.grey, thickness: 1.0)),
           ],
         ),
       ),
