@@ -22,19 +22,24 @@ class DietRecordPage extends StatefulWidget {
 
 class _DietRecordPageState extends State<DietRecordPage> {
   String selectedMeal = '아침';
-  List<double> calories = [];
   List<String> foodList = [];
+  List<double> calories = [];
+  List<double> carbohydrate = [];
+  List<double> protein = [];
+  List<double> fat = [];
+  List<double> sugar = [];
+  List<double> sodium = [];
   double totalCalories = 0;
   double totalCarbohydrate = 0;
   double totalProtein = 0;
   double totalFat = 0;
   double totalSugar = 0;
   double totalSodium = 0;
+  List<FoodItem> selectedFoodList = [];
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
-  final String baseUrl =
-      'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
+  final String baseUrl = 'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +95,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
             ),
             SizedBox(height: 16),
             Text(
-              '음식 검색',
+              '검색',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
@@ -159,6 +164,33 @@ class _DietRecordPageState extends State<DietRecordPage> {
                   style: TextStyle(fontSize: 18),
                 ),
               ],
+            ),
+            SizedBox(height: 16),
+            Text(
+              '선택된 음식:',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 8),
+            // 선택된 음식 표시
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: selectedFoodList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(selectedFoodList[index].name),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          // 선택된 음식 삭제
+                          _removeFood(index);
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -245,34 +277,6 @@ class _DietRecordPageState extends State<DietRecordPage> {
     }
   }
 
-  void _searchFood(String keyword) async {
-    // API 요청을 위한 URL 생성
-    String url = '$baseUrl/1/5/DESC_KOR=$keyword';
-
-    // API 호출
-    http.Response response = await http.get(Uri.parse(url));
-
-    // XML 파싱
-    if (response.statusCode == 200) {
-      xml.XmlDocument xmlDocument = xml.XmlDocument.parse(response.body);
-
-      List<String> results = [];
-      Iterable<xml.XmlElement> elements = xmlDocument.findAllElements('row');
-
-      for (var element in elements) {
-        String foodName =
-            element.findElements('DESC_KOR').first.innerText; // 음식 이름 가져오기
-        results.add(foodName);
-      }
-
-      setState(() {
-        foodList = results;
-      });
-    } else {
-      print('API 요청에 실패하였습니다.');
-    }
-  }
-
   void _fetchFoodInfo(String foodName) async {
     // API 요청을 위한 URL 생성
     String url = '$baseUrl/1/1/DESC_KOR=$foodName';
@@ -306,16 +310,26 @@ class _DietRecordPageState extends State<DietRecordPage> {
 
       setState(() {
         FoodItem selectedFood = FoodItem(
-            name: foodName,
-            calories: kcal,
-            carbohydrate: carbohydrate,
-            protein: protein,
-            fat: fat,
-            sugar: sugar,
-            sodium: sodium,
-        });
+          name: foodName,
+          calories: kcal,
+          carbohydrate: carbohydrate,
+          protein: protein,
+          fat: fat,
+          sugar: sugar,
+          sodium: sodium,
+        );
+
+        selectedFoodList.add(selectedFood);
+
+        totalCalories += kcal;
+        totalCarbohydrate += carbohydrate;
+        totalProtein += protein;
+        totalFat += fat;
+        totalSugar += sugar;
+        totalSodium += sodium;
+      });
     } else {
-      print('API 요청에 실패하였습니다.');
+      print('API 요청 실패');
     }
   }
 
@@ -324,25 +338,42 @@ class _DietRecordPageState extends State<DietRecordPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('현재 상태 체크'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 상태 체크 관련 위젯 추가
-              ElevatedButton(
-                child: Text('식단 등록'),
-                onPressed: () {
-                  // 식단을 데이터에 저장하는 로직 추가
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffFF923F),
-                ),
-              ),
-            ],
+          title: Text('설문조사'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text('설문조사 내용'),
+              ],
+            ),
           ),
+          actions: [
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                // 설문조사 결과를 서버로 전송하는 로직 추가
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
         );
       },
     );
+  }
+
+  void _removeFood(int index) {
+    FoodItem removedFood = selectedFoodList.removeAt(index);
+    totalCalories -= removedFood.calories;
+    totalCarbohydrate -= removedFood.carbohydrate;
+    totalProtein -= removedFood.protein;
+    totalFat -= removedFood.fat;
+    totalSugar -= removedFood.sugar;
+    totalSodium -= removedFood.sodium;
   }
 }
