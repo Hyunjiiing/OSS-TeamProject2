@@ -15,6 +15,26 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class FoodItem {
+  final String name;
+  final double calories;
+  final double carbohydrate;
+  final double protein;
+  final double fat;
+  final double sugar;
+  final double sodium;
+
+  FoodItem({
+    required this.name,
+    required this.calories,
+    required this.carbohydrate,
+    required this.protein,
+    required this.fat,
+    required this.sugar,
+    required this.sodium,
+  });
+}
+
 class DietRecordPage extends StatefulWidget {
   @override
   _DietRecordPageState createState() => _DietRecordPageState();
@@ -329,7 +349,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
         totalSodium += sodium;
       });
     } else {
-      print('API 요청 실패');
+      print('Error: API 요청에 실패했습니다');
     }
   }
 
