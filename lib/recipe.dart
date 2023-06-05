@@ -58,5 +58,18 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
     }
   }
+  void getRecipeDetails(String recipeName) async {
+    var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/1000'));
+
+    if (response.statusCode == 200) {
+      var xmlData = response.body;
+      var document = xml.XmlDocument.parse(xmlData);
+      var recipeElements = document.findAllElements('row');
+
+
+    } else {
+      print('레시피 검색에 실패했습니다: ${response.statusCode}');
+    }
+  }
   }
 }
