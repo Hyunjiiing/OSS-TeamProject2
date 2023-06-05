@@ -100,7 +100,19 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFFff923f)), // 입력칸 클릭 시 줄 색상 변경
                       ),
-    
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey), // 원래 색상
+                      ),
+                    ),
+                    cursorColor: Color(0xFFff923f), // 깜빡거리는 커서 색상 변경
+                  ),
+                ),
+                SizedBox(width: 16.0),
+                ElevatedButton(
+                  onPressed: _saveWeightEntry,
+                  child: Text('저장'),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFFff923f), // 버튼 색상 변경
                   ),
                 ),
               ],
