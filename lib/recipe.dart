@@ -66,6 +66,26 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
       var document = xml.XmlDocument.parse(xmlData);
       var recipeElements = document.findAllElements('row');
 
+      for (var recipeElement in recipeElements) {
+        var name = recipeElement.findElements('RCP_NM').first.text;
+        if (name == recipeName) {
+          var details = '';
+          for (int i = 1; i <= 10; i++) { // 최대 10개의 MANUAL 요소 확인
+            var manualElement = recipeElement.findElements('MANUAL${i.toString().padLeft(2, '0')}').first;
+            if (manualElement != null) {
+              var manualText = manualElement.text.replaceAll('<br />', '\n');
+              details += manualText.replaceAll(RegExp(r'^\d+.\s'), '') + '\n\n';
+            } else {
+              break; // MANUAL 요소가 없으면 종료
+            }
+          }
+          setState(() {
+            _selectedRecipe = name;
+            _recipeDetails = details;
+          });
+          break;
+        }
+      }
 
     } else {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
