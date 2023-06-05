@@ -117,6 +117,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
               cursorColor: Color(0xFFFF923F),
             ),
+
             ElevatedButton(
               onPressed: searchRecipesByIngredient,
               child: Text(
@@ -156,7 +157,15 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                
+                SizedBox(height: 8.0),
+                Text(
+                  '만드는 방법:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Text(_recipeDetails),
               ],
             )
                 : Container(),
