@@ -145,6 +145,21 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 },
               ),
             ),
+            SizedBox(height: 16.0),
+            _selectedRecipe.isNotEmpty
+                ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '레시피: $_selectedRecipe',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                
+              ],
+            )
+                : Container(),
           ],
         ),
       ),
