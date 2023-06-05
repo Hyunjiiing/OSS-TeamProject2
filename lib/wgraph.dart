@@ -84,6 +84,28 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: '몸무게를 입력하세요', // 힌트 텍스트 변경
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFff923f)), // 입력칸 클릭 시 줄 색상 변경
+                      ),
+    
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
