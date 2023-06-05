@@ -36,3 +36,35 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
       }
     });
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: null,
+      body: Column(
+        children: [
+          Expanded(
+            child: LineChart(
+              LineChartData(
+                minX: 0,
+                maxX: weightEntries.length.toDouble() - 1,
+                minY: 0,
+                maxY: 100,
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: weightEntries,
+                    isCurved: true,
+                    dotData: FlDotData(show: false),
+                    colors: [
+                      const Color(0xFFff923f), // 그래프 색상 변경
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
