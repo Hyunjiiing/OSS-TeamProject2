@@ -23,3 +23,14 @@ class RecipeSearchPage extends StatefulWidget {
   @override
   _RecipeSearchPageState createState() => _RecipeSearchPageState();
 }
+
+class _RecipeSearchPageState extends State<RecipeSearchPage> {
+  final TextEditingController _ingredientController = TextEditingController();
+  List<String> _matchingRecipes = [];
+  String _selectedRecipe = '';
+  String _recipeDetails = '';
+
+  void searchRecipesByIngredient() async {
+    String ingredient = _ingredientController.text;
+  }
+}
