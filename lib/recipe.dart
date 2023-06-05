@@ -117,7 +117,16 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
               cursorColor: Color(0xFFFF923F),
             ),
-            
+            ElevatedButton(
+              onPressed: searchRecipesByIngredient,
+              child: Text(
+                '검색',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFFF923F),
+              ),
+            ),
           ],
         ),
       ),
