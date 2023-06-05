@@ -60,6 +60,27 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                     ],
                   ),
                 ],
+                titlesData: FlTitlesData(
+                  leftTitles: SideTitles(
+                    showTitles: true,
+                    interval: 5,
+                    getTextStyles: (value) => const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  bottomTitles: SideTitles(
+                    showTitles: true,
+                    interval: 1,
+                    getTextStyles: (value) => const TextStyle(
+                      color: Colors.black,
+                    ),
+                    getTitles: (value) {
+                      return '${(value + 1).toInt()}일'; // 숫자 뒤에 '일' 추가, 시작 값은 1로 설정
+                    },
+                    reservedSize: 30,
+                    margin: 10,
+                  ),
+                ),
               ),
             ),
           ),
