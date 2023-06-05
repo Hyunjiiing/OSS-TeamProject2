@@ -58,6 +58,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
     }
   }
+
   void getRecipeDetails(String recipeName) async {
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/1000'));
 
@@ -86,10 +87,40 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
           break;
         }
       }
-
     } else {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: null,
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: _ingredientController,
+              decoration: InputDecoration(
+                labelText: '재료를 입력하세요',
+                labelStyle: TextStyle(
+                  color: Colors.black, // 원래 색상
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey), // 원래 색상
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFFF923F), width: 2.0),
+                ),
+              ),
+              cursorColor: Color(0xFFFF923F),
+            ),
+            
+          ],
+        ),
+      ),
+    );
   }
 }
