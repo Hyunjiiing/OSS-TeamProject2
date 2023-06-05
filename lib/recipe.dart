@@ -127,6 +127,24 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 primary: Color(0xFFFF923F),
               ),
             ),
+            SizedBox(height: 16.0),
+            Text(
+              '입력한 재료를 포함하는 레시피:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _matchingRecipes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_matchingRecipes[index]),
+                    onTap: () => getRecipeDetails(_matchingRecipes[index]),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
