@@ -39,5 +39,24 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
       var xmlData = response.body;
       var document = xml.XmlDocument.parse(xmlData);
       var recipeElements = document.findAllElements('row');
+
+      List<String> matchingRecipes = [];
+      for (var recipeElement in recipeElements) {
+        var ingredients = recipeElement.findElements('RCP_PARTS_DTLS').first.text;
+        if (ingredients.contains(ingredient)) {
+          var recipeName = recipeElement.findElements('RCP_NM').first.text;
+          matchingRecipes.add(recipeName);
+        }
+      }
+
+      setState(() {
+        _matchingRecipes = matchingRecipes;
+        _selectedRecipe = '';
+        _recipeDetails = '';
+      });
+    } else {
+      print('레시피 검색에 실패했습니다: ${response.statusCode}');
+    }
+  }
   }
 }
