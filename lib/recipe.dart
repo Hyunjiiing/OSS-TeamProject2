@@ -32,5 +32,12 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
 
   void searchRecipesByIngredient() async {
     String ingredient = _ingredientController.text;
+
+    var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50'));
+
+    if (response.statusCode == 200) {
+      var xmlData = response.body;
+      var document = xml.XmlDocument.parse(xmlData);
+      var recipeElements = document.findAllElements('row');
   }
 }
