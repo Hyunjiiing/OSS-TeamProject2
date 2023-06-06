@@ -45,15 +45,35 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
     'Level 6: 매일 매우 강도 높은 운동 또는 육체노동',
   ];
 
+  String _getActivityLevel(String? selectedLevel) {
+    switch (selectedLevel) {
+      case 'Level 1: 운동을 거의 또는 전혀 하지 않음':
+        return 'level_1';
+      case 'Level 2: 일주일에 1-3회 운동':
+        return 'level_2';
+      case 'Level 3: 일주일에 4-5회 운동':
+        return 'level_3';
+      case 'Level 4: 매일 운동 또는 강도 높은 운동 주 3~4회':
+        return 'level_4';
+      case 'Level 5: 강도 높은 운동 일주일에 6~7회':
+        return 'level_5';
+      case 'Level 6: 매일 매우 강도 높은 운동 또는 육체노동':
+        return 'level_6';
+      default:
+        return '';
+    }
+  }
+
   Future<void> _calculateDailyCalorie() async {
     if (_formKey.currentState!.validate()) {
       final String age = _ageController.text;
       final String height = _heightController.text;
       final String weight = _weightController.text;
       final String calorie = _calorieController.text;
+      final String level = _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
 
       final String apiUrl =
-          '/dailycalorie?age=$age&gender=$_gender&height=$height&weight=$weight&activitylevel=$_activityLevel';
+          '/dailycalorie?age=$age&gender=$_gender&height=$height&weight=$weight&activitylevel=$level';
 
       final Uri apiUri = Uri.https(
         'fitness-calculator.p.rapidapi.com',
@@ -197,9 +217,12 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                   },
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _calculateDailyCalorie,
-                  child: Text('일일섭취칼로리량 계산하기'),
+                Container(
+                  color: Color(0xffFF923F),
+                  child: ElevatedButton(
+                    onPressed: _calculateDailyCalorie,
+                    child: Text('일일섭취칼로리량 계산하기'),
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 Text('일일섭취칼로리량: $_apiResponse'),
