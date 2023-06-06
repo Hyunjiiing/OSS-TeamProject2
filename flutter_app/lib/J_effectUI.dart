@@ -9,26 +9,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '총 일일에너지소비량 계산기',
+      title: '다이어트를 위한 일일섭취칼로리량',
       theme: ThemeData(
         primaryColor: Color(0xffFF923F),
       ),
-      home: CalculatorPage(),
+      home: DietCalculatorScreen(),
     );
   }
 }
 
-class CalculatorPage extends StatefulWidget {
+class DietCalculatorScreen extends StatefulWidget {
   @override
-  _CalculatorPageState createState() => _CalculatorPageState();
+  _DietCalculatorScreenState createState() => _DietCalculatorScreenState();
 }
 
-class _CalculatorPageState extends State<CalculatorPage> {
-  String _age;
-  String _gender;
-  String _height;
-  String _weight;
-  String _activityLevel;
+class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _calorieController = TextEditingController();
+
+  String _gender = '';
+  String _activityLevel = '';
+  String _apiResponse = '';
+  String _comparisonMessage = '';
 
   final List<String> genderOptions = ['Male', 'Female'];
   final List<String> activityLevelOptions = [
@@ -40,32 +45,40 @@ class _CalculatorPageState extends State<CalculatorPage> {
     'Level 6: 매일 매우 강도 높은 운동 또는 육체노동',
   ];
 
-  void _calculateDailyCalorie() async {
-    final url = Uri.https(
-      'fitness-calculator.p.rapidapi.com',
-      '/dailycalorie',
-      {
-        'age': _age,
-        'gender': _gender.toLowerCase(),
-        'height': _height,
-        'weight': _weight,
-        'activitylevel': _activityLevel,
-      },
-    );
+  Future<void> _calculateDailyCalorie() async {
+    if (_formKey.currentState!.validate()) {
+      final String age = _ageController.text;
+      final String height = _heightController.text;
+      final String weight = _weightController.text;
+      final String calorie = _calorieController.text;
 
-    final headers = {
-      'X-RapidAPI-Key': '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
-      'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com',
-    };
+      final String level = _activityLevel.split(': ')[1];
 
-    final response = await http.get(url, headers: headers);
+      final String apiUrl =
+          '/dailycalorie?age=$age&gender=$_gender&height=$height&weight=$weight&activitylevel=$level';
 
-    if (response.statusCode == 200) {
-      final body = response.body;
-      // TODO: 결과를 처리하고 UI에 출력하는 로직을 추가하세요.
-      print(body);
-    } else {
-      print('Error: ${response.statusCode}');
+      final Uri apiUri = Uri.https(
+        'fitness-calculator.p.rapidapi.com',
+        apiUrl,
+      );
+
+      final response = await http.get(
+        apiUri,
+        headers: {
+          'X-RapidAPI-Key': '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
+          'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _apiResponse = response.body;
+        });
+
+        final int dailyCalorie = int.parse(response.body);
+
+        final int userCalorie = int.parse(calorie);
+      }
     }
   }
 
