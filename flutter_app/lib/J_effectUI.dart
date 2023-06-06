@@ -78,6 +78,22 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
         final int dailyCalorie = int.parse(response.body);
 
         final int userCalorie = int.parse(calorie);
+
+        if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) > 100) {
+          _comparisonMessage = '조금 더 먹어도 괜찮아요!';
+        } else if (dailyCalorie == userCalorie) {
+          _comparisonMessage = '다이어트에 딱 좋은 칼로리예요!';
+        } else if (dailyCalorie < userCalorie &&
+            (userCalorie - dailyCalorie) > 200) {
+          _comparisonMessage = '섭취 칼로리량을 줄일 필요가 있어요!';
+        } else {
+          _comparisonMessage = '';
+        }
+      } else {
+        setState(() {
+          _apiResponse = 'Error: ${response.statusCode}';
+          _comparisonMessage = '';
+        });
       }
     }
   }
@@ -86,7 +102,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('총 일일에너지소비량 계산기'),
+        title: Text('다이어트를 위한 일일섭취칼로리량'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,13 +111,16 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
           children: [
             Text(
               '나이',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18.0),
             ),
             TextFormField(
-              onChanged: (value) {
-                setState(() {
-                  _age = value;
-                });
+              controller: _ageController,
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return '나이를 입력해주세요.';
+                }
+                return null;
               },
             ),
             SizedBox(height: 16),
@@ -149,7 +168,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
             ),
             SizedBox(height: 16),
             Text(
-              '활동 수준',
+              '활동 수준을 선택해주세요.',
               style: TextStyle(fontSize: 18),
             ),
             DropdownButtonFormField<String>(
@@ -169,8 +188,19 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _calculateDailyCalorie,
-              child: Text('일일 에너지소비량 계산'),
+              child: Text('일일 섭취 칼로리 구하기'),
             ),
+            SizedBox(height: 16.0),
+            if (_apiResponse.isNotEmpty)
+              Text(
+                '일일 섭취 칼로리량: $_apiResponse',
+                style: TextStyle(fontSize: 18.0),
+              ),
+            if (_comparisonMessage.isNotEmpty)
+              Text(
+                _comparisonMessage,
+                style: TextStyle(fontSize: 18.0),
+              ),
           ],
         ),
       ),
