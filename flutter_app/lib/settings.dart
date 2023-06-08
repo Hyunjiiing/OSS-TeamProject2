@@ -44,3 +44,12 @@ class _SettingScreenState extends State<SettingScreen> {
     builder: (context, settings, _) {
     return Switch(
     value: settings.notificationEnabled,
+    onChanged: (value) {
+    setState(() {
+    settings.notificationEnabled = value;
+    });
+    },
+    );
+    },
+    ),
+    ),
