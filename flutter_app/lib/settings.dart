@@ -106,3 +106,10 @@ class Settings extends ChangeNotifier {
     notifyListeners();
     _saveSettingsToSharedPrefs();
   }
+  Language get language => _language;
+  set language(Language value) {
+    _language = value;
+    notifyListeners();
+    _saveSettingsToSharedPrefs();
+  }
+
