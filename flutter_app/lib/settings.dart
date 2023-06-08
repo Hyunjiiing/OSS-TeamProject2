@@ -38,4 +38,9 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return ListView(
         children: [
-        ListTile(
+    ListTile(
+    title: Text('푸시 알림 설정'),
+    trailing: Consumer<Settings>(
+    builder: (context, settings, _) {
+    return Switch(
+    value: settings.notificationEnabled,
