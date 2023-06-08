@@ -8,3 +8,20 @@ void main() {
     child: MyApp(),
   ));
 }
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color(0xFFFF923F),
+        brightness: Provider.of<Settings>(context).isDarkMode
+            ? Brightness.dark
+            : Brightness.light,
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: Text('다이어트 설정')),
+        body: SettingScreen(),
+      ),
+    );
+  }
