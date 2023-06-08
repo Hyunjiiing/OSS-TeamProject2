@@ -61,3 +61,10 @@ class _SettingScreenState extends State<SettingScreen> {
     DropdownMenuItem(child: Text('기본 테마'), value: ThemeMode.light),
     DropdownMenuItem(child: Text('다크 모드'), value: ThemeMode.dark),
     ],
+    onChanged: (value) {
+    setState(() {
+    Provider.of<Settings>(context, listen: false).themeMode = value!;
+    });
+    },
+    ),
+    ),
