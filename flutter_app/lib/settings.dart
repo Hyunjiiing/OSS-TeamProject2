@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color(0xFFFF923F),
-        brightness: Provider.of<Settings>(context).isDarkMode
+        brightness: Provider
+            .of<Settings>(context)
+            .isDarkMode
             ? Brightness.dark
             : Brightness.light,
       ),
@@ -25,3 +27,8 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+class SettingScreen extends StatefulWidget {
+@override
+_SettingScreenState createState() => _SettingScreenState();
+}
