@@ -92,3 +92,10 @@ class Settings extends ChangeNotifier {
   bool _notificationEnabled = true;
   ThemeMode _themeMode = ThemeMode.light;
   Language _language = Language.korean;
+
+  bool get notificationEnabled => _notificationEnabled;
+  set notificationEnabled(bool value) {
+    _notificationEnabled = value;
+    notifyListeners();
+    _saveSettingsToSharedPrefs();
+  }
