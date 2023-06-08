@@ -99,3 +99,10 @@ class Settings extends ChangeNotifier {
     notifyListeners();
     _saveSettingsToSharedPrefs();
   }
+
+  ThemeMode get themeMode => _themeMode;
+  set themeMode(ThemeMode value) {
+    _themeMode = value;
+    notifyListeners();
+    _saveSettingsToSharedPrefs();
+  }
