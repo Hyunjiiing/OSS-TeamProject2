@@ -68,3 +68,9 @@ class _SettingScreenState extends State<SettingScreen> {
     },
     ),
     ),
+    ListTile(
+    title: Text('언어 설정'),
+    trailing: DropdownButton<Language>(
+    value: Provider.of<Settings>(context).language,
+    items: [
+    DropdownMenuItem(child: Text('한국어'), value: Language.korean),
