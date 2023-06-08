@@ -62,7 +62,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
   double totalSugar = 0;
   double totalSodium = 0;
   List<FoodItem> selectedFoodList = [];
-  String mood = '';
+  String? mood = '전혀 그렇지 않다';
   bool? hasAlcoholAppointment;
   bool? isTraveling;
   bool? overeating;
@@ -81,7 +81,6 @@ class _DietRecordPageState extends State<DietRecordPage> {
       print('설문조사 데이터 저장에 실패했습니다: $error');
     });
   }
-
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
@@ -213,7 +212,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
             ),
             SizedBox(height: 16),
             Text(
-              '선택된 음식:',
+              '먹은 음식:',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
@@ -249,7 +248,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('식사 선택'),
+          title: Text('식사 시간'),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
@@ -386,26 +385,70 @@ class _DietRecordPageState extends State<DietRecordPage> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('식단 등록'),
+              title: Text('오늘의 기분은'),
               content: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('오늘의 기분은 어떤가요?'),
+                    Text('지금 우울한가요?'),
                     SizedBox(height: 8),
-                    TextField(
+                    RadioListTile<String>(
+                      title: Text('전혀 그렇지 않다'),
+                      value: '전혀 그렇지 않다',
+                      groupValue: mood,
                       onChanged: (value) {
                         setState(() {
                           mood = value;
                         });
                       },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '기분을 입력하세요',
-                      ),
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('그렇지 않다'),
+                      value: '그렇지 않다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('보통이다'),
+                      value: '보통이다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('그렇다'),
+                      value: '그렇다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('매우 그렇다'),
+                      value: '매우 그렇다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
                     ),
                     SizedBox(height: 16),
-                    Text('오늘은 약속이 있어 알코올을 섭취했나요?'),
+                    Text('오늘 술 약속이 있나요?'),
                     SizedBox(height: 8),
                     Row(
                       children: [
@@ -415,9 +458,10 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: hasAlcoholAppointment,
                           onChanged: (value) {
                             setState(() {
-                              hasAlcoholAppointment = value as bool?;
+                              hasAlcoholAppointment = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                         SizedBox(width: 16),
                         Text('아니오'),
@@ -426,14 +470,15 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: hasAlcoholAppointment,
                           onChanged: (value) {
                             setState(() {
-                              hasAlcoholAppointment = value as bool?;
+                              hasAlcoholAppointment = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                       ],
                     ),
                     SizedBox(height: 16),
-                    Text('오늘은 여행 중이신가요?'),
+                    Text('오늘 여행할 계획이 있나요?'),
                     SizedBox(height: 8),
                     Row(
                       children: [
@@ -443,9 +488,10 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: isTraveling,
                           onChanged: (value) {
                             setState(() {
-                              isTraveling = value as bool?;
+                              isTraveling = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                         SizedBox(width: 16),
                         Text('아니오'),
@@ -454,14 +500,15 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: isTraveling,
                           onChanged: (value) {
                             setState(() {
-                              isTraveling = value as bool?;
+                              isTraveling = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                       ],
                     ),
                     SizedBox(height: 16),
-                    Text('오늘은 과식을 했나요?'),
+                    Text('오늘은 과식 또는 폭식을 했나요?'),
                     SizedBox(height: 8),
                     Row(
                       children: [
@@ -471,9 +518,10 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: overeating,
                           onChanged: (value) {
                             setState(() {
-                              overeating = value as bool?;
+                              overeating = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                         SizedBox(width: 16),
                         Text('아니오'),
@@ -482,9 +530,10 @@ class _DietRecordPageState extends State<DietRecordPage> {
                           groupValue: overeating,
                           onChanged: (value) {
                             setState(() {
-                              overeating = value as bool?;
+                              overeating = value;
                             });
                           },
+                          activeColor: Color(0xffFF923F),
                         ),
                       ],
                     ),
@@ -497,7 +546,12 @@ class _DietRecordPageState extends State<DietRecordPage> {
                     _submitSurvey();
                     Navigator.pop(context);
                   },
-                  child: Text('등록'),
+                  child: Text(
+                    '등록',
+                    style: TextStyle(
+                      color: Color(0xffFF923F),
+                    ),
+                  ),
                 ),
               ],
             );
