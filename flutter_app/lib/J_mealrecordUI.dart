@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+await Firebase.initializeApp(
+options: DefaultFirebaseOptions.currentPlatform,
+);
 
 void main() {
   runApp(MyApp());
