@@ -53,3 +53,11 @@ class _SettingScreenState extends State<SettingScreen> {
     },
     ),
     ),
+    ListTile(
+    title: Text('테마'),
+    trailing: DropdownButton<ThemeMode>(
+    value: Provider.of<Settings>(context).themeMode,
+    items: [
+    DropdownMenuItem(child: Text('기본 테마'), value: ThemeMode.light),
+    DropdownMenuItem(child: Text('다크 모드'), value: ThemeMode.dark),
+    ],
