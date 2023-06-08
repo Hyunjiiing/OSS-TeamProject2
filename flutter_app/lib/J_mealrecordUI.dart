@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-await Firebase.initializeApp(
-options: DefaultFirebaseOptions.currentPlatform,
-);
+FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -63,13 +63,23 @@ class _DietRecordPageState extends State<DietRecordPage> {
   double totalSodium = 0;
   List<FoodItem> selectedFoodList = [];
   String mood = '';
-  bool hasAlcoholAppointment = false;
-  bool isTraveling = false;
-  bool overeating = false;
+  bool? hasAlcoholAppointment;
+  bool? isTraveling;
+  bool? overeating;
 
   void _submitSurvey() {
-    // 설문조사 데이터를 처리하는 로직을 구현합니다.
-    // 예를 들어, 데이터를 서버로 전송하거나 로컬에 저장하는 등의 동작을 수행할 수 있습니다.
+    _fireStore.collection('survey_eating').add({
+      'mood': mood,
+      'alcohol': hasAlcoholAppointment,
+      'travel': isTraveling,
+      'overeating': overeating,
+    }).then((value) {
+      // 저장이 성공하면 수행할 작업
+      print('설문조사 데이터가 성공적으로 저장되었습니다.');
+    }).catchError((error) {
+      // 저장이 실패하면 수행할 작업
+      print('설문조사 데이터 저장에 실패했습니다: $error');
+    });
   }
 
 
@@ -373,115 +383,125 @@ class _DietRecordPageState extends State<DietRecordPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('식단 등록'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('오늘의 기분은 어떤가요?'),
-                SizedBox(height: 8),
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      mood = value;
-                    });
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('식단 등록'),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('오늘의 기분은 어떤가요?'),
+                    SizedBox(height: 8),
+                    TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: '기분을 입력하세요',
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘은 약속이 있어 알코올을 섭취했나요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: hasAlcoholAppointment,
+                          onChanged: (value) {
+                            setState(() {
+                              hasAlcoholAppointment = value as bool?;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: hasAlcoholAppointment,
+                          onChanged: (value) {
+                            setState(() {
+                              hasAlcoholAppointment = value as bool?;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘은 여행 중이신가요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: isTraveling,
+                          onChanged: (value) {
+                            setState(() {
+                              isTraveling = value as bool?;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: isTraveling,
+                          onChanged: (value) {
+                            setState(() {
+                              isTraveling = value as bool?;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘은 과식을 했나요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: overeating,
+                          onChanged: (value) {
+                            setState(() {
+                              overeating = value as bool?;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: overeating,
+                          onChanged: (value) {
+                            setState(() {
+                              overeating = value as bool?;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _submitSurvey();
+                    Navigator.pop(context);
                   },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: '기분을 입력하세요',
-                  ),
-                ),
-                SizedBox(height: 16),
-                Text('오늘은 약속이 있어 알코올을 섭취했나요?'),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text('예'),
-                    Checkbox(
-                      value: hasAlcoholAppointment,
-                      onChanged: (value) {
-                        setState(() {
-                          hasAlcoholAppointment = value ?? false;
-                        });
-                      },
-                    ),
-                    SizedBox(width: 16),
-                    Text('아니오'),
-                    Checkbox(
-                      value: !hasAlcoholAppointment,
-                      onChanged: (value) {
-                        setState(() {
-                          hasAlcoholAppointment = !(value ?? true);
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Text('오늘은 여행 중이신가요?'),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text('예'),
-                    Checkbox(
-                      value: isTraveling,
-                      onChanged: (value) {
-                        setState(() {
-                          isTraveling = value ?? false;
-                        });
-                      },
-                    ),
-                    SizedBox(width: 16),
-                    Text('아니오'),
-                    Checkbox(
-                      value: !isTraveling,
-                      onChanged: (value) {
-                        setState(() {
-                          isTraveling = !(value ?? true);
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Text('오늘은 과식을 했나요?'),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text('예'),
-                    Checkbox(
-                      value: overeating,
-                      onChanged: (value) {
-                        setState(() {
-                          overeating = value ?? false;
-                        });
-                      },
-                    ),
-                    SizedBox(width: 16),
-                    Text('아니오'),
-                    Checkbox(
-                      value: !overeating,
-                      onChanged: (value) {
-                        setState(() {
-                          overeating = !(value ?? true);
-                        });
-                      },
-                    ),
-                  ],
+                  child: Text('등록'),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _submitSurvey();
-                Navigator.pop(context);
-              },
-              child: Text('등록'),
-            ),
-          ],
+            );
+          },
         );
       },
     );
