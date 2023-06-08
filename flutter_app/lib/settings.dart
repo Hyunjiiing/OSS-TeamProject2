@@ -87,3 +87,8 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 }
+
+class Settings extends ChangeNotifier {
+  bool _notificationEnabled = true;
+  ThemeMode _themeMode = ThemeMode.light;
+  Language _language = Language.korean;
