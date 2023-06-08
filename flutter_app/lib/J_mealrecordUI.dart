@@ -56,6 +56,16 @@ class _DietRecordPageState extends State<DietRecordPage> {
   double totalSugar = 0;
   double totalSodium = 0;
   List<FoodItem> selectedFoodList = [];
+  String mood = '';
+  bool hasAlcoholAppointment = false;
+  bool isTraveling = false;
+  bool overeating = false;
+
+  void _submitSurvey() {
+    // 설문조사 데이터를 처리하는 로직을 구현합니다.
+    // 예를 들어, 데이터를 서버로 전송하거나 로컬에 저장하는 등의 동작을 수행할 수 있습니다.
+  }
+
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
@@ -356,30 +366,114 @@ class _DietRecordPageState extends State<DietRecordPage> {
   void _showSurveyDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: Text('설문조사'),
+          title: Text('식단 등록'),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('설문조사 내용'),
+                Text('오늘의 기분은 어떤가요?'),
+                SizedBox(height: 8),
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      mood = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '기분을 입력하세요',
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text('오늘은 약속이 있어 알코올을 섭취했나요?'),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('예'),
+                    Checkbox(
+                      value: hasAlcoholAppointment,
+                      onChanged: (value) {
+                        setState(() {
+                          hasAlcoholAppointment = value ?? false;
+                        });
+                      },
+                    ),
+                    SizedBox(width: 16),
+                    Text('아니오'),
+                    Checkbox(
+                      value: !hasAlcoholAppointment,
+                      onChanged: (value) {
+                        setState(() {
+                          hasAlcoholAppointment = !(value ?? true);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Text('오늘은 여행 중이신가요?'),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('예'),
+                    Checkbox(
+                      value: isTraveling,
+                      onChanged: (value) {
+                        setState(() {
+                          isTraveling = value ?? false;
+                        });
+                      },
+                    ),
+                    SizedBox(width: 16),
+                    Text('아니오'),
+                    Checkbox(
+                      value: !isTraveling,
+                      onChanged: (value) {
+                        setState(() {
+                          isTraveling = !(value ?? true);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Text('오늘은 과식을 했나요?'),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('예'),
+                    Checkbox(
+                      value: overeating,
+                      onChanged: (value) {
+                        setState(() {
+                          overeating = value ?? false;
+                        });
+                      },
+                    ),
+                    SizedBox(width: 16),
+                    Text('아니오'),
+                    Checkbox(
+                      value: !overeating,
+                      onChanged: (value) {
+                        setState(() {
+                          overeating = !(value ?? true);
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           actions: [
             TextButton(
-              child: Text('확인'),
               onPressed: () {
-                // 설문조사 결과를 서버로 전송하는 로직 추가
-                Navigator.pop(context);
+                _submitSurvey();
                 Navigator.pop(context);
               },
-            ),
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              child: Text('등록'),
             ),
           ],
         );
