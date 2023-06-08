@@ -9,9 +9,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '다이어트를 위한 일일섭취칼로리량',
+      title: '다이어트를 위한 일일섭취칼로리량 구하기',
       theme: ThemeData(
         primaryColor: Color(0xffFF923F),
+        appBarTheme: AppBarTheme(
+          color: Color(0xffFF923F),
+        ),
       ),
       home: DietCalculatorScreen(),
     );
@@ -35,7 +38,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
   String _apiResponse = '';
   String _comparisonMessage = '';
 
-  List<String> genderOptions = ['Male', 'Female'];
+  List<String> genderOptions = ['male', 'female'];
   List<String> activityLevelOptions = [
     'Level 1: 운동을 거의 또는 전혀 하지 않음',
     'Level 2: 일주일에 1-3회 운동',
@@ -67,21 +70,21 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
   Future<void> _calculateDailyCalorie() async {
     if (_formKey.currentState!.validate()) {
       final String age = _ageController.text;
+      final int parsedAge = int.parse(age);
       final String height = _heightController.text;
+      final int parsedHeight = int.parse(height);
       final String weight = _weightController.text;
+      final int parsedWeight = int.parse(weight);
       final String calorie = _calorieController.text;
+      final int userCalorie = int.parse(calorie);
       final String level = _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
 
       final String apiUrl =
-          '/dailycalorie?age=$age&gender=$_gender&height=$height&weight=$weight&activitylevel=$level';
+          'https://fitness-calculator.p.rapidapi.com/dailycalorie?age=$parsedAge&gender=$_gender&height=$parsedHeight&weight=$parsedWeight&activitylevel=$level';
 
-      final Uri apiUri = Uri.https(
-        'fitness-calculator.p.rapidapi.com',
-        apiUrl,
-      );
+      final Uri apiUri = Uri.parse(apiUrl);
 
-      final response = await http.get(
-        apiUri,
+      final response = await http.get(apiUri,
         headers: {
           'X-RapidAPI-Key': '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
           'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com',
@@ -89,22 +92,41 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
       );
 
       if (response.statusCode == 200) {
-        setState(() {
-          _apiResponse = response.body;
-        });
+        final String responseBody = response.body;
+        final int weightLossIndex = responseBody.indexOf('"Weight loss"');
+        final int caloryIndex = responseBody.indexOf('"calory"', weightLossIndex);
+        final int colonIndex = responseBody.indexOf(':', caloryIndex);
+        final int commaIndex = responseBody.indexOf(',', caloryIndex);
 
-        final int dailyCalorie = int.parse(response.body);
-        final int userCalorie = int.parse(calorie);
+        final String weightLossCalorie = responseBody.substring(colonIndex + 1, commaIndex).trim();
 
-        if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) > 100) {
-          _comparisonMessage = '조금 더 먹어도 괜찮아요!';
-        } else if (dailyCalorie == userCalorie) {
-          _comparisonMessage = '다이어트에 딱 좋은 칼로리량이에요!';
-        } else if (dailyCalorie < userCalorie && (userCalorie - dailyCalorie) > 100) {
-          _comparisonMessage = '조금 덜 먹으면 좋아요!';
+        if (weightLossCalorie.contains('.')) {
+          final dotIndex = weightLossCalorie.lastIndexOf('.');
+          setState(() {
+            _apiResponse = weightLossCalorie.substring(0, dotIndex);
+          });
         } else {
-          _comparisonMessage = '적정 칼로리량이에요!';
+          setState(() {
+            _apiResponse = weightLossCalorie;
+          });
         }
+
+        final int dailyCalorie = int.parse(weightLossCalorie);
+
+        String comparisonMessage;
+        if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) > 100) {
+          comparisonMessage = '조금 더 먹어도 괜찮아요!';
+        } else if (dailyCalorie == userCalorie) {
+          comparisonMessage = '다이어트에 딱 좋은 칼로리량이에요!';
+        } else if (dailyCalorie < userCalorie && (userCalorie - dailyCalorie) > 100) {
+          comparisonMessage = '조금 덜 먹으면 좋아요!';
+        } else {
+          comparisonMessage = '적정 칼로리량이에요!';
+        }
+
+        setState(() {
+          _comparisonMessage = comparisonMessage;
+        });
       } else {
         setState(() {
           _apiResponse = 'Error: ${response.statusCode}';
@@ -127,13 +149,6 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '개인 정보',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 SizedBox(height: 16.0),
                 Text('성별'),
                 DropdownButton<String>(
@@ -217,16 +232,27 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                   },
                 ),
                 SizedBox(height: 16.0),
-                Container(
-                  color: Color(0xffFF923F),
-                  child: ElevatedButton(
-                    onPressed: _calculateDailyCalorie,
-                    child: Text('일일섭취칼로리량 계산하기'),
+                Center( // Center-align the button
+                  child: Container(
+                    color: Theme.of(context).primaryColor, // Use the primary color
+                    child: ElevatedButton(
+                      onPressed: _calculateDailyCalorie,
+                      child: Text('일일섭취칼로리량 계산하기'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.0),
-                Text('일일섭취칼로리량: $_apiResponse'),
-                Text('비교 결과: $_comparisonMessage'),
+                Text(
+                  '일일섭취칼로리량: $_apiResponse kcal',
+                  style: TextStyle(fontSize: 18.0), // Increase the text size
+                ),
+                Text(
+                  '비교 결과: $_comparisonMessage',
+                  style: TextStyle(fontSize: 18.0), // Increase the text size
+                ),
               ],
             ),
           ),
