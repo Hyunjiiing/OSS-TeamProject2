@@ -127,5 +127,10 @@ class Settings extends ChangeNotifier {
   void _loadSettingsFromSharedPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _notificationEnabled = prefs.getBool('notificationEnabled') ?? true;
+    _themeMode = ThemeMode.values[prefs.getInt('themeMode') ?? 0];
+    _language = Language.values[prefs.getInt('language') ?? 0];
+    notifyListeners();
+  }
+}
 
 
