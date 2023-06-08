@@ -124,3 +124,8 @@ class Settings extends ChangeNotifier {
     await prefs.setInt('language', _language.index);
   }
 
+  void _loadSettingsFromSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _notificationEnabled = prefs.getBool('notificationEnabled') ?? true;
+
+
