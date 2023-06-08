@@ -41,8 +41,8 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
   List<String> genderOptions = ['male', 'female'];
   List<String> activityLevelOptions = [
     'Level 1: 운동을 거의 또는 전혀 하지 않음',
-    'Level 2: 일주일에 1-3회 운동',
-    'Level 3: 일주일에 4-5회 운동',
+    'Level 2: 일주일에 1-3회 적당한 운동',
+    'Level 3: 일주일에 4-5회 적당한 운동',
     'Level 4: 매일 운동 또는 강도 높은 운동 주 3~4회',
     'Level 5: 강도 높은 운동 일주일에 6~7회',
     'Level 6: 매일 매우 강도 높은 운동 또는 육체노동',
@@ -52,9 +52,9 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
     switch (selectedLevel) {
       case 'Level 1: 운동을 거의 또는 전혀 하지 않음':
         return 'level_1';
-      case 'Level 2: 일주일에 1-3회 운동':
+      case 'Level 2: 일주일에 1-3회 적당한 운동':
         return 'level_2';
-      case 'Level 3: 일주일에 4-5회 운동':
+      case 'Level 3: 일주일에 4-5회 적당한 운동':
         return 'level_3';
       case 'Level 4: 매일 운동 또는 강도 높은 운동 주 3~4회':
         return 'level_4';
@@ -77,7 +77,8 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
       final int parsedWeight = int.parse(weight);
       final String calorie = _calorieController.text;
       final int userCalorie = int.parse(calorie);
-      final String level = _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
+      final String level = _getActivityLevel(
+          activityLevelOptions[_activityLevel! - 1]);
 
       final String apiUrl =
           'https://fitness-calculator.p.rapidapi.com/dailycalorie?age=$parsedAge&gender=$_gender&height=$parsedHeight&weight=$parsedWeight&activitylevel=$level';
@@ -96,41 +97,37 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
         final int weightLossIndex = responseBody.indexOf('"Weight loss"');
         final int caloryIndex = responseBody.indexOf('"calory"', weightLossIndex);
         final int colonIndex = responseBody.indexOf(':', caloryIndex);
-        final int commaIndex = responseBody.indexOf(',', caloryIndex);
+        final int endIndex = responseBody.indexOf('}', caloryIndex);
+        final String weightLossCalorie = responseBody.substring(colonIndex + 1, endIndex).trim();
 
-        final String weightLossCalorie = responseBody.substring(colonIndex + 1, commaIndex).trim();
-
-        if (weightLossCalorie.contains('.')) {
-          final dotIndex = weightLossCalorie.lastIndexOf('.');
+        try {
+          final double weightLossCalorieValue = double.parse(weightLossCalorie);
+          final int weightLossCalorieInt = weightLossCalorieValue.toInt();
           setState(() {
-            _apiResponse = weightLossCalorie.substring(0, dotIndex);
+            _apiResponse = weightLossCalorieInt.toString();
           });
-        } else {
+
+          final int dailyCalorie = weightLossCalorieInt;
+
+          if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) >= 80) {
+            setState(() {
+              _comparisonMessage = '조금 더 먹어도 괜찮아요!';
+            });
+          } else if (dailyCalorie < userCalorie && (userCalorie - dailyCalorie) >= 80) {
+            setState(() {
+              _comparisonMessage = '조금 덜 먹으면 좋아요!';
+            });
+          } else {
+            setState(() {
+              _comparisonMessage = '다이어트에 적당한 칼로리량이에요!';
+            });
+          }
+        } catch (e) {
           setState(() {
-            _apiResponse = weightLossCalorie;
+            _apiResponse = '';
+            _comparisonMessage = '';
           });
         }
-
-        final int dailyCalorie = int.parse(weightLossCalorie);
-
-        String comparisonMessage;
-        if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) > 100) {
-          comparisonMessage = '조금 더 먹어도 괜찮아요!';
-        } else if (dailyCalorie == userCalorie) {
-          comparisonMessage = '다이어트에 딱 좋은 칼로리량이에요!';
-        } else if (dailyCalorie < userCalorie && (userCalorie - dailyCalorie) > 100) {
-          comparisonMessage = '조금 덜 먹으면 좋아요!';
-        } else {
-          comparisonMessage = '적정 칼로리량이에요!';
-        }
-
-        setState(() {
-          _comparisonMessage = comparisonMessage;
-        });
-      } else {
-        setState(() {
-          _apiResponse = 'Error: ${response.statusCode}';
-        });
       }
     }
   }
@@ -213,10 +210,12 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                   items: activityLevelOptions
                       .asMap()
                       .entries
-                      .map((entry) => DropdownMenuItem<int>(
-                    value: entry.key + 1,
-                    child: Text(entry.value),
-                  ))
+                      .map(
+                        (entry) => DropdownMenuItem<int>(
+                      value: entry.key + 1,
+                      child: Text(entry.value),
+                    ),
+                  )
                       .toList(),
                 ),
                 SizedBox(height: 16.0),
@@ -232,12 +231,12 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                   },
                 ),
                 SizedBox(height: 16.0),
-                Center( // Center-align the button
+                Center(
                   child: Container(
-                    color: Theme.of(context).primaryColor, // Use the primary color
+                    color: Theme.of(context).primaryColor,
                     child: ElevatedButton(
                       onPressed: _calculateDailyCalorie,
-                      child: Text('일일섭취칼로리량 계산하기'),
+                      child: Text('결과보기'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
@@ -245,13 +244,26 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                Text(
-                  '일일섭취칼로리량: $_apiResponse kcal',
-                  style: TextStyle(fontSize: 18.0), // Increase the text size
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      '권장일일섭취칼로리량: $_apiResponse kcal',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    Text(
+                      ' $_comparisonMessage',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ],
                 ),
-                Text(
-                  '비교 결과: $_comparisonMessage',
-                  style: TextStyle(fontSize: 18.0), // Increase the text size
+                Center(
+                  child: SizedBox(
+                    child: Text('다이어트를 위한 권장 탄단지 비율은 5:3:2 입니다!',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
                 ),
               ],
             ),
