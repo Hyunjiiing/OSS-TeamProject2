@@ -74,3 +74,16 @@ class _SettingScreenState extends State<SettingScreen> {
     value: Provider.of<Settings>(context).language,
     items: [
     DropdownMenuItem(child: Text('한국어'), value: Language.korean),
+      DropdownMenuItem(child: Text('영어'), value: Language.english),
+    ],
+      onChanged: (value) {
+        setState(() {
+          Provider.of<Settings>(context, listen: false).language = value!;
+        });
+      },
+    ),
+    ),
+        ],
+    );
+  }
+}
