@@ -182,7 +182,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
             ),
             SizedBox(height: 16.0),
             Text(
-              '입력한 재료를 포함하는 레시피:',
+              _matchingRecipes.isEmpty ? '' : '입력한 재료를 포함하는 레시피:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -222,15 +222,18 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 separatorBuilder: (context, index) => SizedBox(height: 8.0),
               ),
             ),
-            SizedBox(height: 16.0),
-            Text(
-              '레시피 상세:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            if (_selectedRecipe.isNotEmpty) ...[
+              SizedBox(height: 16.0),
+              Text(
+                '$_selectedRecipe 레시피 상세:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFF923F),
+                ),
               ),
-            ),
-            SizedBox(height: 8.0),
-            Text(_recipeDetails),
+              SizedBox(height: 8.0),
+              Text(_recipeDetails),
+            ],
           ],
         ),
       ),
