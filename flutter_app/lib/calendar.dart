@@ -69,6 +69,27 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
+    if (nutritionalSupplementsController.text.isEmpty) { // 수정된 부분: 영양제 입력 확인
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('섭취한 영양제를 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     setState(() {
       events[selectedDay] = [
         menstrualPeriodController.text,
