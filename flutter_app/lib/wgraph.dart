@@ -46,52 +46,67 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           Expanded(
             child: LineChart(
               LineChartData(
-                  minX: 0,
-                  maxX: weightEntries.length.toDouble() - 1,
-                  minY: 0,
-                  maxY: 100,
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: weightEntries,
-                      isCurved: true,
-                      dotData: FlDotData(show: false),
+                minX: 0,
+                maxX: weightEntries.length.toDouble() - 1,
+                minY: 0,
+                maxY: 100,
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: weightEntries,
+                    isCurved: true,
+                    dotData: FlDotData(show: false),
+                    colors: [
+                      const Color(0xFFff923f), // 그래프 색상 변경
+                    ],
+                    // 수정 시작
+                    barWidth: 4, // 선의 너비를 4로 설정하여 두껍게 변경
+                    // 수정 끝
+                    belowBarData: BarAreaData(
+                      show: true,
                       colors: [
-                        const Color(0xFFff923f), // 그래프 색상 변경
+                        const Color(0x33ff923f), // 그래프 아래 영역 색상 변경
                       ],
                     ),
-                  ],
-                  titlesData: FlTitlesData(
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      interval: 5,
-                      getTextStyles: (value) => const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1,
-                      getTextStyles: (value) => const TextStyle(
-                        color: Colors.black,
-                      ),
-                      getTitles: (value) {
-                        return '${(value + 1).toInt()}일'; // 숫자 뒤에 '일' 추가, 시작 값은 1로 설정
-                      },
-                      reservedSize: 30,
-                      margin: 10,
+                  ),
+                ],
+                titlesData: FlTitlesData(
+                  leftTitles: SideTitles(
+                    showTitles: true,
+                    interval: 20, // 선들이 표시되는 간격을 20으로 변경
+                    getTextStyles: (value) => const TextStyle(
+                      color: Colors.black,
                     ),
                   ),
-                  gridData: FlGridData(
-                    show: true, // 그리드 라인을 표시
-                    drawHorizontalLine: true, // 수평 라인 표시
-                    horizontalInterval: 20, // 수평 라인 간격 설정
-                    getDrawingVerticalLine: (value) {
-                      return FlLine(
-                        color: const Color(0xFFEAEAEA), // 수직 라인 색상 변경
-                        strokeWidth: 1, // 수직 라인 너비 변경
-                      );
+                  bottomTitles: SideTitles(
+                    showTitles: true,
+                    interval: 1,
+                    getTextStyles: (value) => const TextStyle(
+                      color: Colors.black,
+                    ),
+                    getTitles: (value) {
+                      return '${(value + 1).toInt()}일';
                     },
-                  )
+                    reservedSize: 30,
+                    margin: 10,
+                  ),
+                ),
+                gridData: FlGridData(
+                  show: true, // 그리드 라인을 표시
+                  drawHorizontalLine: true, // 수평 라인 표시
+                  horizontalInterval: 20, // 수평 라인 간격 설정
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(
+                      color: const Color(0xFFEAEAEA), // 수직 라인 색상 변경
+                      strokeWidth: 1, // 수직 라인 너비 변경
+                    );
+                  },
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: const Color(0xFFEAEAEA), // 수평 라인 색상 변경
+                      strokeWidth: 1, // 수평 라인 너비 변경
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -104,18 +119,18 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                     controller: weightController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: '몸무게를 입력하세요', // 힌트 텍스트 변경
+                      labelText: '몸무게를 입력하세요',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFff923f)), // 입력칸 클릭 시 줄 색상 변경
+                        borderSide: BorderSide(color: Color(0xFFff923f)),
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey), // 원래 색상
+                        borderSide: BorderSide(color: Colors.grey),
                       ),
                     ),
-                    cursorColor: Color(0xFFff923f), // 깜빡거리는 커서 색상 변경
+                    cursorColor: Color(0xFFff923f),
                   ),
                 ),
                 SizedBox(width: 16.0),
@@ -123,7 +138,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                   onPressed: _saveWeightEntry,
                   child: Text('저장'),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFFff923f), // 버튼 색상 변경
+                    primary: const Color(0xFFff923f),
                   ),
                 ),
               ],
