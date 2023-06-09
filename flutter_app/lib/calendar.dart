@@ -237,7 +237,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       Expanded(
                         child: TextField(
                           controller: menstrualPeriodController,
-                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color(0xFFFF923F)),
@@ -262,7 +262,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       Expanded(
                         child: TextField(
                           controller: nutritionalSupplementsController,
-                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color(0xFFFF923F)),
@@ -287,7 +287,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       Expanded(
                         child: TextField(
                           controller: conditionController,
-                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color(0xFFFF923F)),
@@ -312,7 +312,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       Expanded(
                         child: TextField(
                           controller: waterIntakeController,
-                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color(0xFFFF923F)),
