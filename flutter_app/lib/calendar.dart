@@ -48,7 +48,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   }
 
   void saveEvent() {
-    if (menstrualPeriodController.text.isEmpty) { // 월경기간 입력 확인
+    if (menstrualPeriodController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -69,7 +69,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
-    if (nutritionalSupplementsController.text.isEmpty) { // 영양제 입력 확인
+    if (nutritionalSupplementsController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -90,7 +90,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
-    if (conditionController.text.isEmpty) { // 컨디션 입력 확인
+    if (conditionController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -111,13 +111,13 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
-    if (waterIntakeController.text.isEmpty) { // 수정된 부분: 섭취한 물의 양 입력 확인
+    if (waterIntakeController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('오류'),
-            content: Text('섭취한 물의 양을 입력하세요.'), // 수정된 부분: 에러 메시지 변경
+            content: Text('섭취한 물의 양을 입력하세요.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -232,6 +232,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   Text('월경기간'),
                   TextField(
                     controller: menstrualPeriodController,
+                    style: TextStyle(color: const Color(0xFFFF923F)), // 수정된 부분: 깜빡거리는 커서의 색상
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xFFFF923F)), // 수정된 부분: 밑줄의 색상
+                      ),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         events[selectedDay]?[0] = value;
@@ -242,6 +248,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   Text('섭취한 영양제'),
                   TextField(
                     controller: nutritionalSupplementsController,
+                    style: TextStyle(color: const Color(0xFFFF923F)), // 수정된 부분: 깜빡거리는 커서의 색상
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xFFFF923F)), // 수정된 부분: 밑줄의 색상
+                      ),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         events[selectedDay]?[1] = value;
@@ -252,6 +264,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   Text('컨디션'),
                   TextField(
                     controller: conditionController,
+                    style: TextStyle(color: const Color(0xFFFF923F)), // 수정된 부분: 깜빡거리는 커서의 색상
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xFFFF923F)), // 수정된 부분: 밑줄의 색상
+                      ),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         events[selectedDay]?[2] = value;
@@ -262,6 +280,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   Text('섭취한 물의 양'),
                   TextField(
                     controller: waterIntakeController,
+                    style: TextStyle(color: const Color(0xFFFF923F)), // 수정된 부분: 깜빡거리는 커서의 색상
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xFFFF923F)), // 수정된 부분: 밑줄의 색상
+                      ),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         events[selectedDay]?[3] = value;
