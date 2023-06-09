@@ -26,7 +26,7 @@ class WeightTrackerPage extends StatefulWidget {
 class _WeightTrackerPageState extends State<WeightTrackerPage> {
   List<FlSpot> weightEntries = [];
   TextEditingController weightController = TextEditingController();
-  bool showErrorMessage = false; // 수정: 오류 메시지를 표시할지 여부를 나타내는 상태 변수
+  bool showErrorMessage = false;
 
   void _saveWeightEntry() {
     setState(() {
@@ -34,9 +34,9 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
       if (weight != null) {
         weightEntries.add(FlSpot(weightEntries.length.toDouble(), weight));
         weightController.clear();
-        showErrorMessage = false; // 수정: 오류 메시지를 초기화
+        showErrorMessage = false;
       } else {
-        showErrorMessage = true; // 수정: 오류 메시지를 표시
+        showErrorMessage = true;
       }
     });
   }
@@ -44,7 +44,18 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFff923f), // 수정: 앱바의 색상을 FF923F로 설정
+        title: Text(
+          '체중 변화 그래프',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true, // 수정: 앱바의 제목을 가운데 정렬
+      ),
       body: Column(
         children: [
           Expanded(
@@ -60,15 +71,13 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                     isCurved: true,
                     dotData: FlDotData(show: false),
                     colors: [
-                      const Color(0xFFff923f), // 그래프 색상 변경
+                      const Color(0xFFff923f),
                     ],
-                    // 수정 시작
-                    barWidth: 4, // 선의 너비를 4로 설정하여 두껍게 변경
-                    // 수정 끝
+                    barWidth: 4,
                     belowBarData: BarAreaData(
                       show: true,
                       colors: [
-                        const Color(0x33ff923f), // 그래프 아래 영역 색상 변경
+                        const Color(0x33ff923f),
                       ],
                     ),
                   ),
@@ -76,7 +85,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                 titlesData: FlTitlesData(
                   leftTitles: SideTitles(
                     showTitles: true,
-                    interval: 20, // 선들이 표시되는 간격을 20으로 변경
+                    interval: 20,
                     getTextStyles: (value) => const TextStyle(
                       color: Colors.black,
                     ),
@@ -95,19 +104,19 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                   ),
                 ),
                 gridData: FlGridData(
-                  show: true, // 그리드 라인을 표시
-                  drawHorizontalLine: true, // 수평 라인 표시
-                  horizontalInterval: 20, // 수평 라인 간격 설정
+                  show: true,
+                  drawHorizontalLine: true,
+                  horizontalInterval: 20,
                   getDrawingVerticalLine: (value) {
                     return FlLine(
-                      color: const Color(0xFFEAEAEA), // 수직 라인 색상 변경
-                      strokeWidth: 1, // 수직 라인 너비 변경
+                      color: const Color(0xFFEAEAEA),
+                      strokeWidth: 1,
                     );
                   },
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: const Color(0xFFEAEAEA), // 수평 라인 색상 변경
-                      strokeWidth: 1, // 수평 라인 너비 변경
+                      color: const Color(0xFFEAEAEA),
+                      strokeWidth: 1,
                     );
                   },
                 ),
@@ -116,7 +125,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           ),
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: Column( // 수정: 에러 메시지를 컬럼으로 감싸서 여러 줄 표시 가능
+            child: Column(
               children: [
                 TextField(
                   controller: weightController,
@@ -136,7 +145,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                   cursorColor: Color(0xFFff923f),
                 ),
                 SizedBox(height: 8.0),
-                if (showErrorMessage) // 수정: 오류 메시지가 표시되도록 조건부 위젯 사용
+                if (showErrorMessage)
                   Text(
                     '체중을 입력해주세요',
                     style: TextStyle(color: Colors.red),
