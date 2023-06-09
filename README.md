@@ -16,15 +16,21 @@
 h.jilluminate@gmail.com
 
 위에 팀장님 메일로 해당 github링크와 fox앱 다운 받고 싶다고 요청하시면
+
 메일을 통해 APK파일로 보내드립니다.
 
 ### 의존성
 
-  table_calendar: ^3.0.9
-  intl: ^0.18.0
-  http: ^1.0.0
-  xml: ^6.3.0
-  fl_chart: ^0.35.0
-  cloud_firestore: ^4.8.0
+table_calendar: ^3.0.9
+
+intl: ^0.18.0
+
+http: ^1.0.0
+
+xml: ^6.3.0
+
+fl_chart: ^0.35.0
+
+cloud_firestore: ^4.8.0
 
 http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50
