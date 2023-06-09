@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,8 +16,36 @@ class _MyAppState extends State<MyApp> {
   int experience = 0; // 초기 경험치 설정
   int cumulativeExerciseTime = 0; // 누적 운동 시간
   int consumedCalories = 0; // 소모 칼로리
+  bool isDataSubmitted = false; // 데이터가 이미 제출되었는지 여부
+
+  DatabaseReference _databaseReference = FirebaseDatabase.instance.reference();
+
+  @override
+  void initState() {
+    super.initState();
+    checkDataSubmission();
+  }
+
+  void checkDataSubmission() {
+    String userId = "yC5fWuwq5RsfKAL1wgxh"; // 사용자 ID
+    FirebaseFirestore.instance
+        .collection('input_check')
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          bool isSubmitted = snapshot.get('input');
+          isDataSubmitted = isSubmitted ?? false; // 데이터가 이미 제출되었음을 표시합니다.
+        });
+      }
+    });
+  }
+
 
   void calculateExperience(int exerciseTime) {
+    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
+
     if (level < 10) {
       experience += (exerciseTime ~/ 40) * 100;
     } else if (level < 20) {
@@ -32,6 +62,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void calculateExperienceFromCalories(int calories) {
+    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 하루 소모 칼로리 입력을 중지합니다.
+
     if (calories >= 500) {
       experience += 100;
     }
@@ -140,6 +172,8 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+                        if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
+
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -196,6 +230,7 @@ class _MyAppState extends State<MyApp> {
                                     } else {
                                       calculateExperience(exerciseTime);
                                       cumulativeExerciseTime += exerciseTime;
+                                      isDataSubmitted = true; // 데이터가 제출되었음을 표시합니다.
                                       Navigator.pop(context);
                                     }
                                   },
@@ -219,6 +254,8 @@ class _MyAppState extends State<MyApp> {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
+                    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 소모 칼로리 입력을 중지합니다.
+
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -274,6 +311,7 @@ class _MyAppState extends State<MyApp> {
                                   );
                                 } else {
                                   calculateExperienceFromCalories(calories);
+                                  isDataSubmitted = true; // 데이터가 제출되었음을 표시합니다.
                                   Navigator.pop(context);
                                 }
                               },
