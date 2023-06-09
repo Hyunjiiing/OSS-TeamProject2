@@ -26,6 +26,7 @@ class WeightTrackerPage extends StatefulWidget {
 class _WeightTrackerPageState extends State<WeightTrackerPage> {
   List<FlSpot> weightEntries = [];
   TextEditingController weightController = TextEditingController();
+  bool showErrorMessage = false; // 수정: 오류 메시지를 표시할지 여부를 나타내는 상태 변수
 
   void _saveWeightEntry() {
     setState(() {
@@ -33,6 +34,9 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
       if (weight != null) {
         weightEntries.add(FlSpot(weightEntries.length.toDouble(), weight));
         weightController.clear();
+        showErrorMessage = false; // 수정: 오류 메시지를 초기화
+      } else {
+        showErrorMessage = true; // 수정: 오류 메시지를 표시
       }
     });
   }
@@ -112,28 +116,32 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           ),
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: Row(
+            child: Column( // 수정: 에러 메시지를 컬럼으로 감싸서 여러 줄 표시 가능
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: weightController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: '몸무게를 입력하세요',
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFff923f)),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
+                TextField(
+                  controller: weightController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: '몸무게를 입력하세요',
+                    labelStyle: TextStyle(
+                      color: Colors.black,
                     ),
-                    cursorColor: Color(0xFFff923f),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFff923f)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
                   ),
+                  cursorColor: Color(0xFFff923f),
                 ),
-                SizedBox(width: 16.0),
+                SizedBox(height: 8.0),
+                if (showErrorMessage) // 수정: 오류 메시지가 표시되도록 조건부 위젯 사용
+                  Text(
+                    '체중을 입력해주세요',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                SizedBox(height: 8.0),
                 ElevatedButton(
                   onPressed: _saveWeightEntry,
                   child: Text('저장'),
