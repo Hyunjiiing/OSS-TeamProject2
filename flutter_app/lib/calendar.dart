@@ -230,37 +230,53 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('월경기간'),
-                  TextField(
-                    controller: menstrualPeriodController,
-                    style: TextStyle(color: const Color(0xFFFF923F)),
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.water_drop, color: const Color(0xFFFF923F)),  // Add water drop icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: menstrualPeriodController,
+                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[0] = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    cursorColor: const Color(0xFFFF923F),
-                    onChanged: (value) {
-                      setState(() {
-                        events[selectedDay]?[0] = value;
-                      });
-                    },
+                    ],
                   ),
                   SizedBox(height: 16),
                   Text('섭취한 영양제'),
-                  TextField(
-                    controller: nutritionalSupplementsController,
-                    style: TextStyle(color: const Color(0xFFFF923F)),
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.medication, color: const Color(0xFFFF923F)),  // Add pill icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: nutritionalSupplementsController,
+                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[1] = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    cursorColor: const Color(0xFFFF923F),
-                    onChanged: (value) {
-                      setState(() {
-                        events[selectedDay]?[1] = value;
-                      });
-                    },
+                    ],
                   ),
                   SizedBox(height: 16),
                   Text('컨디션'),
