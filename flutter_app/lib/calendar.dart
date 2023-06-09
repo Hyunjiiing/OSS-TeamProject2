@@ -57,9 +57,15 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       ];
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFF923F),
+        title: Text('캘린더'),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           TableCalendar(
@@ -83,56 +89,56 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
             eventLoader: (day) {
               return events[day] ?? [];
             },
-        calendarBuilders: CalendarBuilders(
-          markerBuilder: (context, day, events) {
-            if (events.isNotEmpty) {
-              return Container(
-                width: 6,
-                height: 6,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFFFF923F),
-                ),
-              );
-            }
-            return null;
-          },
-          selectedBuilder: (context, day, events) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFFF923F),
-              ),
-              margin: const EdgeInsets.all(8),
-              alignment: Alignment.center,
-              child: Text(
-                day.day.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            );
-          },
-          todayBuilder: (context, day, events) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFFF923F),
-              ),
-              margin: const EdgeInsets.all(8),
-              alignment: Alignment.center,
-                child: Text(
-                  day.day.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: (context, day, events) {
+                if (events.isNotEmpty) {
+                  return Container(
+                    width: 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFFFF923F),
+                    ),
+                  );
+                }
+                return null;
+              },
+              selectedBuilder: (context, day, events) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF923F),
                   ),
-                ),
-            );
-          },
-        ),
-      ),
+                  margin: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  child: Text(
+                    day.day.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+              todayBuilder: (context, day, events) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF923F),
+                  ),
+                  margin: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  child: Text(
+                    day.day.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -148,36 +154,36 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       });
                     },
                   ),
-              SizedBox(height: 16),
-              Text('섭취한 영양제'),
-              TextField(
-                controller: nutritionalSupplementsController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[1] = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              Text('컨디션'),
-              TextField(
-                controller: conditionController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[2] = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              Text('섭취한 물의 양'),
-              TextField(
-                controller: waterIntakeController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[3] = value;
-                  });
-                },
-              ),
+                  SizedBox(height: 16),
+                  Text('섭취한 영양제'),
+                  TextField(
+                    controller: nutritionalSupplementsController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[1] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text('컨디션'),
+                  TextField(
+                    controller: conditionController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[2] = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Text('섭취한 물의 양'),
+                  TextField(
+                    controller: waterIntakeController,
+                    onChanged: (value) {
+                      setState(() {
+                        events[selectedDay]?[3] = value;
+                      });
+                    },
+                  ),
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: saveEvent,
