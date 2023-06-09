@@ -10,3 +10,10 @@
 ---|---|---|
 [KangJiUng](https://github.com/KangJiUng) | [LSA31](https://github.com/LSA31) | [Hyunjiiing](https://github.com/Hyunjiiing)
 ---
+
+### 설치 방법
+
+h.jilluminate@gmail.com
+
+위에 팀장님 메일로 해당 github링크와 fox앱 다운 받고 싶다고 요청하시면
+메일을 통해 APK파일로 보내드립니다.
