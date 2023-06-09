@@ -29,10 +29,22 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   List<String> _matchingRecipes = [];
   String _selectedRecipe = '';
   String _recipeDetails = '';
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _ingredientController.dispose(); // 컨트롤러 해제
+    super.dispose();
+  }
 
   void searchRecipesByIngredient() async {
-    String ingredient = _ingredientController.text;
+    setState(() {
+      _isLoading = true;
+      _selectedRecipe = '';
+      _recipeDetails = '';
+    });
 
+    String ingredient = _ingredientController.text;
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50'));
 
     if (response.statusCode == 200) {
@@ -51,15 +63,21 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
 
       setState(() {
         _matchingRecipes = matchingRecipes;
-        _selectedRecipe = '';
-        _recipeDetails = '';
+        _isLoading = false;
       });
     } else {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   void getRecipeDetails(String recipeName) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/1000'));
 
     if (response.statusCode == 200) {
@@ -83,12 +101,16 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
           setState(() {
             _selectedRecipe = name;
             _recipeDetails = details;
+            _isLoading = false;
           });
           break;
         }
       }
     } else {
       print('레시피 검색에 실패했습니다: ${response.statusCode}');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -119,8 +141,10 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
             ),
 
             ElevatedButton(
-              onPressed: searchRecipesByIngredient,
-              child: Text(
+              onPressed: _isLoading ? null : searchRecipesByIngredient,
+              child: _isLoading
+                  ? CircularProgressIndicator() // 로딩 인디케이터 표시
+                  : Text(
                 '검색',
                 style: TextStyle(color: Colors.white),
               ),
