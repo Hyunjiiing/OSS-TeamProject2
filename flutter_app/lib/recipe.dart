@@ -13,6 +13,9 @@ class MyApp extends StatelessWidget {
       title: 'Recipe Search',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+          color: Color(0xFFFF923F), // 앱바 색상 수정
+        ),
       ),
       home: RecipeSearchPage(),
     );
@@ -29,9 +32,31 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   List<String> _matchingRecipes = [];
   String _selectedRecipe = '';
   String _recipeDetails = '';
+  Color _ingredientIconColor = Colors.grey;
 
   void searchRecipesByIngredient() async {
     String ingredient = _ingredientController.text;
+
+    if (ingredient.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('검색할 재료를 입력해주세요.'),
+            actions: [
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
 
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50'));
 
@@ -95,7 +120,17 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        title: Text(
+          '재료에 따른 식단 레시피', // 텍스트 수정
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true, // 가운데 정렬
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -114,8 +149,21 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFFFF923F), width: 2.0),
                 ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: _ingredientIconColor,
+                ),
               ),
               cursorColor: Color(0xFFFF923F),
+              onTap: () {
+                setState(() {
+                  _ingredientController.text.isNotEmpty
+                      ? _ingredientController.clear()
+                      : _ingredientController.text = '';
+
+                  _ingredientIconColor = _ingredientController.text.isNotEmpty ? Color(0xFFFF923F) : Colors.grey;
+                });
+              },
             ),
 
             ElevatedButton(
@@ -126,49 +174,66 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFFFF923F),
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
             Text(
-              '입력한 재료를 포함하는 레시피:',
+              _matchingRecipes.isEmpty ? '' : '입력한 재료를 포함하는 레시피:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: _matchingRecipes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_matchingRecipes[index]),
-                    onTap: () => getRecipeDetails(_matchingRecipes[index]),
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Icon(
+                            _matchingRecipes[index] == _selectedRecipe ? Icons.check : null,
+                            color: _matchingRecipes[index] == _selectedRecipe ? Color(0xFFFF923F) : Colors.transparent,
+                          ),
+                          SizedBox(width: 8.0),
+                          Text(_matchingRecipes[index]),
+                        ],
+                      ),
+                      onTap: () => getRecipeDetails(_matchingRecipes[index]),
+                    ),
                   );
                 },
+                separatorBuilder: (context, index) => SizedBox(height: 8.0),
               ),
             ),
-            SizedBox(height: 16.0),
-            _selectedRecipe.isNotEmpty
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '레시피: $_selectedRecipe',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+            if (_selectedRecipe.isNotEmpty) ...[
+              SizedBox(height: 16.0),
+              Text(
+                '$_selectedRecipe 레시피 상세:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFF923F),
                 ),
-                SizedBox(height: 8.0),
-                Text(
-                  '만드는 방법:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Text(_recipeDetails),
-              ],
-            )
-                : Container(),
+              ),
+              SizedBox(height: 8.0),
+              Text(_recipeDetails),
+            ],
           ],
         ),
       ),
