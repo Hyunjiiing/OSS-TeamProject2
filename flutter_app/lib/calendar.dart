@@ -90,6 +90,27 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
+    if (conditionController.text.isEmpty) { // 수정된 부분: 컨디션 입력 확인
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('컨디션을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     setState(() {
       events[selectedDay] = [
         menstrualPeriodController.text,
