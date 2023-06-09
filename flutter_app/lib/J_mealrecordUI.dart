@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -56,6 +62,25 @@ class _DietRecordPageState extends State<DietRecordPage> {
   double totalSugar = 0;
   double totalSodium = 0;
   List<FoodItem> selectedFoodList = [];
+  String? mood = '전혀 그렇지 않다';
+  bool? hasAlcoholAppointment;
+  bool? isTraveling;
+  bool? overeating;
+
+  void _submitSurvey() {
+    _fireStore.collection('survey_eating').add({
+      'mood': mood,
+      'alcohol': hasAlcoholAppointment,
+      'travel': isTraveling,
+      'overeating': overeating,
+    }).then((value) {
+      // 저장이 성공하면 수행할 작업
+      print('설문조사 데이터가 성공적으로 저장되었습니다.');
+    }).catchError((error) {
+      // 저장이 실패하면 수행할 작업
+      print('설문조사 데이터 저장에 실패했습니다: $error');
+    });
+  }
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
@@ -187,7 +212,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
             ),
             SizedBox(height: 16),
             Text(
-              '선택된 음식:',
+              '먹은 음식:',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
@@ -223,7 +248,7 @@ class _DietRecordPageState extends State<DietRecordPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('식사 선택'),
+          title: Text('식사 시간'),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
@@ -356,32 +381,181 @@ class _DietRecordPageState extends State<DietRecordPage> {
   void _showSurveyDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('설문조사'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text('설문조사 내용'),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('오늘의 기분은'),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('지금 우울한가요?'),
+                    SizedBox(height: 8),
+                    RadioListTile<String>(
+                      title: Text('전혀 그렇지 않다'),
+                      value: '전혀 그렇지 않다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('그렇지 않다'),
+                      value: '그렇지 않다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('보통이다'),
+                      value: '보통이다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('그렇다'),
+                      value: '그렇다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    RadioListTile<String>(
+                      title: Text('매우 그렇다'),
+                      value: '매우 그렇다',
+                      groupValue: mood,
+                      onChanged: (value) {
+                        setState(() {
+                          mood = value;
+                        });
+                      },
+                      activeColor: Color(0xffFF923F),
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘 술 약속이 있나요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: hasAlcoholAppointment,
+                          onChanged: (value) {
+                            setState(() {
+                              hasAlcoholAppointment = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: hasAlcoholAppointment,
+                          onChanged: (value) {
+                            setState(() {
+                              hasAlcoholAppointment = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘 여행할 계획이 있나요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: isTraveling,
+                          onChanged: (value) {
+                            setState(() {
+                              isTraveling = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: isTraveling,
+                          onChanged: (value) {
+                            setState(() {
+                              isTraveling = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('오늘은 과식 또는 폭식을 했나요?'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text('예'),
+                        Radio(
+                          value: true,
+                          groupValue: overeating,
+                          onChanged: (value) {
+                            setState(() {
+                              overeating = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                        SizedBox(width: 16),
+                        Text('아니오'),
+                        Radio(
+                          value: false,
+                          groupValue: overeating,
+                          onChanged: (value) {
+                            setState(() {
+                              overeating = value;
+                            });
+                          },
+                          activeColor: Color(0xffFF923F),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _submitSurvey();
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    '등록',
+                    style: TextStyle(
+                      color: Color(0xffFF923F),
+                    ),
+                  ),
+                ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                // 설문조사 결과를 서버로 전송하는 로직 추가
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+            );
+          },
         );
       },
     );
