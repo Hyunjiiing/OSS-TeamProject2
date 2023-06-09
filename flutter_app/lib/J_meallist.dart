@@ -57,10 +57,16 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
+              cursorColor: const Color(0xffFF923F),
               decoration: InputDecoration(
                 labelText: '음식 이름 검색',
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: const Color(0xffFF923F)),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+              ),
               ),
               onChanged: (value) {
                 _onSearchChanged(value);
@@ -118,7 +124,12 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // 새로운 식단 기록 작성 화면으로 이동하는 로직
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewDietRecordScreen(), //화면 연결에서 수정
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
