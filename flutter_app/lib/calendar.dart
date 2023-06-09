@@ -48,6 +48,90 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   }
 
   void saveEvent() {
+    if (menstrualPeriodController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('월경기간을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (nutritionalSupplementsController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('섭취한 영양제를 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (conditionController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('컨디션을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (waterIntakeController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('섭취한 물의 양을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     setState(() {
       events[selectedDay] = [
         menstrualPeriodController.text,
@@ -57,9 +141,15 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       ];
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFF923F),
+        title: Text('캘린더'),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           TableCalendar(
@@ -83,56 +173,56 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
             eventLoader: (day) {
               return events[day] ?? [];
             },
-        calendarBuilders: CalendarBuilders(
-          markerBuilder: (context, day, events) {
-            if (events.isNotEmpty) {
-              return Container(
-                width: 6,
-                height: 6,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFFFF923F),
-                ),
-              );
-            }
-            return null;
-          },
-          selectedBuilder: (context, day, events) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFFF923F),
-              ),
-              margin: const EdgeInsets.all(8),
-              alignment: Alignment.center,
-              child: Text(
-                day.day.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            );
-          },
-          todayBuilder: (context, day, events) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFFF923F),
-              ),
-              margin: const EdgeInsets.all(8),
-              alignment: Alignment.center,
-                child: Text(
-                  day.day.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: (context, day, events) {
+                if (events.isNotEmpty) {
+                  return Container(
+                    width: 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFFFF923F),
+                    ),
+                  );
+                }
+                return null;
+              },
+              selectedBuilder: (context, day, events) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF923F),
                   ),
-                ),
-            );
-          },
-        ),
-      ),
+                  margin: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  child: Text(
+                    day.day.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+              todayBuilder: (context, day, events) {
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF923F),
+                  ),
+                  margin: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  child: Text(
+                    day.day.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -140,44 +230,104 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('월경기간'),
-                  TextField(
-                    controller: menstrualPeriodController,
-                    onChanged: (value) {
-                      setState(() {
-                        events[selectedDay]?[0] = value;
-                      });
-                    },
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.water_drop, color: const Color(0xFFFF923F)),  // Add water drop icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: menstrualPeriodController,
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[0] = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-              SizedBox(height: 16),
-              Text('섭취한 영양제'),
-              TextField(
-                controller: nutritionalSupplementsController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[1] = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              Text('컨디션'),
-              TextField(
-                controller: conditionController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[2] = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              Text('섭취한 물의 양'),
-              TextField(
-                controller: waterIntakeController,
-                onChanged: (value) {
-                  setState(() {
-                    events[selectedDay]?[3] = value;
-                  });
-                },
-              ),
+                  SizedBox(height: 16),
+                  Text('섭취한 영양제'),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.medication, color: const Color(0xFFFF923F)),  // Add pill icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: nutritionalSupplementsController,
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[1] = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Text('컨디션'),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.sentiment_satisfied, color: const Color(0xFFFF923F)),  // Add happy face icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: conditionController,
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[2] = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Text('섭취한 물의 양'),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.local_drink, color: const Color(0xFFFF923F)),  // Add glass icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: waterIntakeController,
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[3] = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: saveEvent,
