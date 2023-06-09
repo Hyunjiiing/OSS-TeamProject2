@@ -140,7 +140,16 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 itemCount: _matchingRecipes.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(_matchingRecipes[index]),
+                    title: Row(
+                      children: [
+                        Icon(
+                          _matchingRecipes[index] == _selectedRecipe ? Icons.check : null,
+                          color: _matchingRecipes[index] == _selectedRecipe ? Color(0xFFFF923F) : Colors.transparent,
+                        ),
+                        SizedBox(width: 8.0),
+                        Text(_matchingRecipes[index]),
+                      ],
+                    ),
                     onTap: () => getRecipeDetails(_matchingRecipes[index]),
                   );
                 },
@@ -165,7 +174,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                   ),
                 ),
                 SizedBox(height: 8.0),
-                Container( // 이 부분이 추가되었습니다.
+                Container(
                   height: 1.0,
                   color: Colors.grey,
                   margin: EdgeInsets.symmetric(vertical: 8.0),
