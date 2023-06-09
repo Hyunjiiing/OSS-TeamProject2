@@ -202,6 +202,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  cursorColor: const Color(0xffFF923F),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: const Color(0xffFF923F)),
@@ -223,6 +224,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  cursorColor: const Color(0xffFF923F),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: const Color(0xffFF923F)),
@@ -244,6 +246,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  cursorColor: const Color(0xffFF923F),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: const Color(0xffFF923F)),
@@ -285,6 +288,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  cursorColor: const Color(0xffFF923F),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: const Color(0xffFF923F)),
