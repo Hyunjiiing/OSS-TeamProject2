@@ -48,7 +48,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   }
 
   void saveEvent() {
-    if (menstrualPeriodController.text.isEmpty) { // 수정된 부분: 월경기간 입력 확인
+    if (menstrualPeriodController.text.isEmpty) { // 월경기간 입력 확인
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -69,7 +69,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
-    if (nutritionalSupplementsController.text.isEmpty) { // 수정된 부분: 영양제 입력 확인
+    if (nutritionalSupplementsController.text.isEmpty) { // 영양제 입력 확인
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -90,13 +90,34 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
       return;
     }
 
-    if (conditionController.text.isEmpty) { // 수정된 부분: 컨디션 입력 확인
+    if (conditionController.text.isEmpty) { // 컨디션 입력 확인
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('오류'),
             content: Text('컨디션을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    if (waterIntakeController.text.isEmpty) { // 수정된 부분: 섭취한 물의 양 입력 확인
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('섭취한 물의 양을 입력하세요.'), // 수정된 부분: 에러 메시지 변경
             actions: [
               TextButton(
                 onPressed: () {
