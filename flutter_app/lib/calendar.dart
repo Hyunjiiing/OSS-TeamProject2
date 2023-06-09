@@ -48,6 +48,27 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
   }
 
   void saveEvent() {
+    if (menstrualPeriodController.text.isEmpty) { // 수정된 부분: 월경기간 입력 확인
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('월경기간을 입력하세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     setState(() {
       events[selectedDay] = [
         menstrualPeriodController.text,
