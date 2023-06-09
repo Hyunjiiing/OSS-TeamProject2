@@ -154,24 +154,39 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: _matchingRecipes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          _matchingRecipes[index] == _selectedRecipe ? Icons.check : null,
-                          color: _matchingRecipes[index] == _selectedRecipe ? Color(0xFFFF923F) : Colors.transparent,
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
                         ),
-                        SizedBox(width: 8.0),
-                        Text(_matchingRecipes[index]),
                       ],
                     ),
-                    onTap: () => getRecipeDetails(_matchingRecipes[index]),
-                    trailing: Icon(Icons.arrow_forward),
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Icon(
+                            _matchingRecipes[index] == _selectedRecipe ? Icons.check : null,
+                            color: _matchingRecipes[index] == _selectedRecipe ? Color(0xFFFF923F) : Colors.transparent,
+                          ),
+                          SizedBox(width: 8.0),
+                          Text(_matchingRecipes[index]),
+                        ],
+                      ),
+                      onTap: () => getRecipeDetails(_matchingRecipes[index]),
+                      trailing: null, // Remove the arrow forward icon
+                    ),
                   );
                 },
+                separatorBuilder: (context, index) => SizedBox(height: 8.0),
               ),
             ),
             SizedBox(height: 16.0),
