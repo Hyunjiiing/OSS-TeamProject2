@@ -27,6 +27,22 @@ class DietCalculatorScreen extends StatefulWidget {
 }
 
 class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
+  late FocusNode _ageFocusNode;
+  late FocusNode _heightFocusNode;
+  late FocusNode _weightFocusNode;
+  late FocusNode _calorieFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // FocusNode들을 초기화
+    _ageFocusNode = FocusNode();
+    _heightFocusNode = FocusNode();
+    _weightFocusNode = FocusNode();
+    _calorieFocusNode = FocusNode();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
@@ -77,17 +93,19 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
       final int parsedWeight = int.parse(weight);
       final String calorie = _calorieController.text;
       final int userCalorie = int.parse(calorie);
-      final String level = _getActivityLevel(
-          activityLevelOptions[_activityLevel! - 1]);
+      final String level =
+      _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
 
       final String apiUrl =
           'https://fitness-calculator.p.rapidapi.com/dailycalorie?age=$parsedAge&gender=$_gender&height=$parsedHeight&weight=$parsedWeight&activitylevel=$level';
 
       final Uri apiUri = Uri.parse(apiUrl);
 
-      final response = await http.get(apiUri,
+      final response = await http.get(
+        apiUri,
         headers: {
-          'X-RapidAPI-Key': '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
+          'X-RapidAPI-Key':
+          '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
           'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com',
         },
       );
@@ -95,10 +113,12 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
       if (response.statusCode == 200) {
         final String responseBody = response.body;
         final int weightLossIndex = responseBody.indexOf('"Weight loss"');
-        final int caloryIndex = responseBody.indexOf('"calory"', weightLossIndex);
+        final int caloryIndex =
+        responseBody.indexOf('"calory"', weightLossIndex);
         final int colonIndex = responseBody.indexOf(':', caloryIndex);
         final int endIndex = responseBody.indexOf('}', caloryIndex);
-        final String weightLossCalorie = responseBody.substring(colonIndex + 1, endIndex).trim();
+        final String weightLossCalorie =
+        responseBody.substring(colonIndex + 1, endIndex).trim();
 
         try {
           final double weightLossCalorieValue = double.parse(weightLossCalorie);
@@ -109,11 +129,13 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
 
           final int dailyCalorie = weightLossCalorieInt;
 
-          if (dailyCalorie > userCalorie && (dailyCalorie - userCalorie) >= 80) {
+          if (dailyCalorie > userCalorie &&
+              (dailyCalorie - userCalorie) >= 80) {
             setState(() {
               _comparisonMessage = '조금 더 먹어도 괜찮아요!';
             });
-          } else if (dailyCalorie < userCalorie && (userCalorie - dailyCalorie) >= 80) {
+          } else if (dailyCalorie < userCalorie &&
+              (userCalorie - dailyCalorie) >= 80) {
             setState(() {
               _comparisonMessage = '조금 덜 먹으면 좋아요!';
             });
@@ -137,6 +159,12 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('다이어트를 위한 일일섭취칼로리량'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.close),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -165,6 +193,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                 SizedBox(height: 16.0),
                 Text('나이'),
                 TextFormField(
+                  focusNode: _ageFocusNode,
                   controller: _ageController,
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -173,10 +202,19 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xffFF923F)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 Text('키 (cm)'),
                 TextFormField(
+                  focusNode: _heightFocusNode,
                   controller: _heightController,
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -185,10 +223,19 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xffFF923F)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 Text('체중 (kg)'),
                 TextFormField(
+                  focusNode: _weightFocusNode,
                   controller: _weightController,
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -197,6 +244,14 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xffFF923F)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 Text('활동 수준'),
@@ -221,6 +276,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                 SizedBox(height: 16.0),
                 Text('하루에 먹을 칼로리'),
                 TextFormField(
+                  focusNode: _calorieFocusNode,
                   controller: _calorieController,
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -229,6 +285,14 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     }
                     return null;
                   },
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: const Color(0xffFF923F)),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 Center(
@@ -260,7 +324,8 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                 ),
                 Center(
                   child: SizedBox(
-                    child: Text('다이어트를 위한 권장 탄단지 비율은 5:3:2 입니다!',
+                    child: Text(
+                      '다이어트를 위한 권장 탄단지 비율은 5:3:2 입니다!',
                       style: TextStyle(fontSize: 16.0),
                     ),
                   ),
