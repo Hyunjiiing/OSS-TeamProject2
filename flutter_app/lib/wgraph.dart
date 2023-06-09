@@ -45,7 +45,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFff923f), // 수정: 앱바의 색상을 FF923F로 설정
+        backgroundColor: Color(0xFFff923f),
         title: Text(
           '체중 변화 그래프',
           style: TextStyle(
@@ -54,78 +54,81 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true, // 수정: 앱바의 제목을 가운데 정렬
+        centerTitle: true,
+        elevation: 8, // 수정: 앱바의 그림자 크기 조정
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: LineChart(
-              LineChartData(
-                minX: 0,
-                maxX: weightEntries.length.toDouble() - 1,
-                minY: 0,
-                maxY: 100,
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: weightEntries,
-                    isCurved: true,
-                    dotData: FlDotData(show: false),
-                    colors: [
-                      const Color(0xFFff923f),
-                    ],
-                    barWidth: 4,
-                    belowBarData: BarAreaData(
-                      show: true,
+      body: Padding(
+        padding: EdgeInsets.all(16.0), // 수정: 그래프와 앱바 사이의 간격 조정
+        child: Column(
+          children: [
+            Expanded(
+              child: LineChart(
+                LineChartData(
+                  minX: 0,
+                  maxX: weightEntries.length.toDouble() - 1,
+                  minY: 0,
+                  maxY: 100,
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: weightEntries,
+                      isCurved: true,
+                      curveSmoothness: 0.5,
+                      dotData: FlDotData(show: false),
                       colors: [
-                        const Color(0x33ff923f),
+                        const Color(0xFFff923f),
                       ],
+                      barWidth: 4,
+                      belowBarData: BarAreaData(
+                        show: true,
+                        colors: [
+                          const Color(0x33ff923f),
+                        ],
+                      ),
+                    ),
+                  ],
+                  titlesData: FlTitlesData(
+                    leftTitles: SideTitles(
+                      showTitles: true,
+                      interval: 20,
+                      getTextStyles: (value) => const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    bottomTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1,
+                      getTextStyles: (value) => const TextStyle(
+                        color: Colors.black,
+                      ),
+                      getTitles: (value) {
+                        return '${(value + 1).toInt()}일';
+                      },
+                      reservedSize: 30,
+                      margin: 10,
                     ),
                   ),
-                ],
-                titlesData: FlTitlesData(
-                  leftTitles: SideTitles(
-                    showTitles: true,
-                    interval: 20,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.black,
-                    ),
-                    getTitles: (value) {
-                      return '${(value + 1).toInt()}일';
+                  gridData: FlGridData(
+                    show: true,
+                    drawHorizontalLine: true,
+                    horizontalInterval: 20,
+                    getDrawingVerticalLine: (value) {
+                      return FlLine(
+                        color: const Color(0xFFEAEAEA),
+                        strokeWidth: 1,
+                      );
                     },
-                    reservedSize: 30,
-                    margin: 10,
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: const Color(0xFFEAEAEA),
+                        strokeWidth: 1,
+                      );
+                    },
                   ),
-                ),
-                gridData: FlGridData(
-                  show: true,
-                  drawHorizontalLine: true,
-                  horizontalInterval: 20,
-                  getDrawingVerticalLine: (value) {
-                    return FlLine(
-                      color: const Color(0xFFEAEAEA),
-                      strokeWidth: 1,
-                    );
-                  },
-                  getDrawingHorizontalLine: (value) {
-                    return FlLine(
-                      color: const Color(0xFFEAEAEA),
-                      strokeWidth: 1,
-                    );
-                  },
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
+            SizedBox(height: 16.0), // 수정: 그래프와 하단 위젯 사이의 간격 조정
+            Column(
               children: [
                 TextField(
                   controller: weightController,
@@ -160,8 +163,8 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

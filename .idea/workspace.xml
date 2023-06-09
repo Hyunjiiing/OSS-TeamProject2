@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="75988c2f-cd88-4052-82c8-af618a9c486f" name="Changes" comment="" />
+    <list default="true" id="75988c2f-cd88-4052-82c8-af618a9c486f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/flutter_app/lib/wgraph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_app/lib/wgraph.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
