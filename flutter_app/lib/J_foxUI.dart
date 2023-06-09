@@ -151,7 +151,7 @@ class _MyAppState extends State<MyApp> {
                             int exerciseTime = 0;
 
                             return AlertDialog(
-                              title: Text('운동 입력'),
+                              title: Text('오늘의 운동 시간은?'),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -162,6 +162,15 @@ class _MyAppState extends State<MyApp> {
                                     onChanged: (value) {
                                       exerciseTime = int.parse(value);
                                     },
+                                    cursorColor: const Color(0xffFF923F),
+                                    decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -182,7 +191,7 @@ class _MyAppState extends State<MyApp> {
                           },
                         );
                       },
-                      child: Text('운동 입력'),
+                      child: Text('운동 시간 입력'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffFF923F),
                       ),
@@ -198,7 +207,7 @@ class _MyAppState extends State<MyApp> {
                         int calories = 0;
 
                         return AlertDialog(
-                          title: Text('하루 소모 칼로리 입력'),
+                          title: Text('오늘의 소모 칼로리는?'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -209,6 +218,15 @@ class _MyAppState extends State<MyApp> {
                                 onChanged: (value) {
                                   calories = int.parse(value);
                                 },
+                                cursorColor: const Color(0xffFF923F),
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: const Color(0xffFF923F)),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
