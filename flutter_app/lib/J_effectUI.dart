@@ -53,6 +53,8 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
   int? _activityLevel;
   String _apiResponse = '';
   String _comparisonMessage = '';
+  bool _isFormValid = true;
+  bool _isApiCallSuccessful = true;
 
   List<String> genderOptions = ['male', 'female'];
   List<String> activityLevelOptions = [
@@ -148,9 +150,18 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
           setState(() {
             _apiResponse = '';
             _comparisonMessage = '';
+            _isApiCallSuccessful = false;
           });
         }
+      } else {
+        setState(() {
+          _isApiCallSuccessful = false;
+        });
       }
+    } else {
+      setState(() {
+        _isFormValid = false;
+      });
     }
   }
 
@@ -311,6 +322,8 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                     ),
                   ),
                 ),
+                if (!_isFormValid) Text('모든 필드를 작성해주세요.', style: TextStyle(color: Colors.red)),
+                if (!_isApiCallSuccessful) Text('API 호출에 문제가 발생했습니다.', style: TextStyle(color: Colors.red)),
                 SizedBox(height: 16.0),
                 SizedBox(height: 16.0),
                 Row(
@@ -320,11 +333,15 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
                       '권장일일섭취칼로리량: $_apiResponse kcal',
                       style: TextStyle(fontSize: 16.0),
                     ),
-                    Text(
-                      ' $_comparisonMessage',
+                  ],
+                ),
+                Center(
+                  child: SizedBox(
+                    child: Text(
+                      '당신의 하루 섭취 칼로리량은? $_comparisonMessage',
                       style: TextStyle(fontSize: 16.0),
                     ),
-                  ],
+                  ),
                 ),
                 Center(
                   child: SizedBox(
