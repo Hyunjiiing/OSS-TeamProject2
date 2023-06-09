@@ -26,9 +26,9 @@ class WeightTrackerPage extends StatefulWidget {
 class _WeightTrackerPageState extends State<WeightTrackerPage> {
   List<FlSpot> weightEntries = [];
   TextEditingController weightController = TextEditingController();
-  double? previousWeight; // 수정: 이전 체중을 저장하기 위한 변수 추가
+  double? previousWeight;
   bool showErrorMessage = false;
-  bool showWeightChangeMessage = false; // 수정: 체중 변화 메시지를 표시하기 위한 변수 추가
+  bool showWeightChangeMessage = false;
 
   void _saveWeightEntry() {
     setState(() {
@@ -42,7 +42,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           showWeightChangeMessage = false;
         }
 
-        previousWeight = weight; // 현재 입력한 체중을 이전 체중으로 저장
+        previousWeight = weight;
         weightController.clear();
         showErrorMessage = false;
       } else {
@@ -72,69 +72,85 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
         child: Column(
           children: [
             Expanded(
-              child: LineChart(
-                LineChartData(
-                  minX: 0,
-                  maxX: weightEntries.length.toDouble() - 1,
-                  minY: 0,
-                  maxY: 100,
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: weightEntries,
-                      isCurved: true,
-                      curveSmoothness: 0.5,
-                      dotData: FlDotData(show: false),
-                      colors: [
-                        const Color(0xFFff923f),
+              child: Stack( // Stack 위젯을 추가하여 그래프와 아이콘을 겹칠 수 있도록 합니다.
+                children: [
+                  LineChart(
+                    LineChartData(
+                      minX: 0,
+                      maxX: weightEntries.length.toDouble() - 1,
+                      minY: 0,
+                      maxY: 100,
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: weightEntries,
+                          isCurved: true,
+                          curveSmoothness: 0.5,
+                          dotData: FlDotData(show: false),
+                          colors: [
+                            const Color(0xFFff923f),
+                          ],
+                          barWidth: 4,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            colors: [
+                              const Color(0x33ff923f),
+                            ],
+                          ),
+                        ),
                       ],
-                      barWidth: 4,
-                      belowBarData: BarAreaData(
+                      titlesData: FlTitlesData(
+                        leftTitles: SideTitles(
+                          showTitles: true,
+                          interval: 20,
+                          getTextStyles: (value) => const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          interval: 1,
+                          getTextStyles: (value) => const TextStyle(
+                            color: Colors.black,
+                          ),
+                          getTitles: (value) {
+                            return '${(value + 1).toInt()}일';
+                          },
+                          reservedSize: 30,
+                          margin: 10,
+                        ),
+                      ),
+                      gridData: FlGridData(
                         show: true,
-                        colors: [
-                          const Color(0x33ff923f),
-                        ],
+                        drawHorizontalLine: true,
+                        horizontalInterval: 20,
+                        getDrawingVerticalLine: (value) {
+                          return FlLine(
+                            color: const Color(0xFFEAEAEA),
+                            strokeWidth: 1,
+                          );
+                        },
+                        getDrawingHorizontalLine: (value) {
+                          return FlLine(
+                            color: const Color(0xFFEAEAEA),
+                            strokeWidth: 1,
+                          );
+                        },
                       ),
                     ),
-                  ],
-                  titlesData: FlTitlesData(
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      interval: 20,
-                      getTextStyles: (value) => const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1,
-                      getTextStyles: (value) => const TextStyle(
-                        color: Colors.black,
-                      ),
-                      getTitles: (value) {
-                        return '${(value + 1).toInt()}일';
-                      },
-                      reservedSize: 30,
-                      margin: 10,
+                    // 추가: 그래프 전체적인 스타일 조정
+                    swapAnimationDuration: Duration(milliseconds: 500),
+                    swapAnimationCurve: Curves.easeInOutCubic,
+                  ),
+                  Positioned( // 아이콘을 그래프 위에 위치시키기 위해 Positioned 위젯을 사용합니다.
+                    right: 16,
+                    bottom: 40,
+                    child: Icon(
+                      Icons.fitness_center, // 아이콘은 "fitness_center"로 대체하였습니다.
+                      color: Colors.grey[400],
+                      size: 48,
                     ),
                   ),
-                  gridData: FlGridData(
-                    show: true,
-                    drawHorizontalLine: true,
-                    horizontalInterval: 20,
-                    getDrawingVerticalLine: (value) {
-                      return FlLine(
-                        color: const Color(0xFFEAEAEA),
-                        strokeWidth: 1,
-                      );
-                    },
-                    getDrawingHorizontalLine: (value) {
-                      return FlLine(
-                        color: const Color(0xFFEAEAEA),
-                        strokeWidth: 1,
-                      );
-                    },
-                  ),
-                ),
+                ],
               ),
             ),
             SizedBox(height: 16.0),
@@ -164,7 +180,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                     style: TextStyle(color: Colors.red),
                   ),
                 SizedBox(height: 8.0),
-                if (showWeightChangeMessage) // 수정: 체중 변화 메시지 표시 조건 추가
+                if (showWeightChangeMessage)
                   Text(
                     '체중 변화가 큽니다!',
                     style: TextStyle(color: Colors.red),
