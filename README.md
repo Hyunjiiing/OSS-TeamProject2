@@ -1,15 +1,23 @@
-# FOX (폭식 스탑)
+# 🦊FOX (폭식 스탑!)🦊
 
 ### 앱 설명
 
-폭식을 예측하여 사용자에게 알림을 보내 방지하는 앱입니다.
+폭식 타이밍을 예측하여 사용자에게 알림을 보내 식단 관리에 도움을 주는 다이어트앱입니다. 
 
-### contributer
+그 외에도 다이어트앱에 필수적인 기능(식단 기록, 물/영양제 기록, 캘린더뷰, 체중그래프 등)뿐만 아니라 
+
+다이어트를 위한 일일섭취칼로리량 계산 기능 또한 제공하고 있습니다.
+
+경험치를 얻어 귀여운 여우 캐릭터 '폭스'를 육성시켜보세요!
+
+
+### contributors
 
 강지웅 | 이승아 | 오현지
 ---|---|---|
 [KangJiUng](https://github.com/KangJiUng) | [LSA31](https://github.com/LSA31) | [Hyunjiiing](https://github.com/Hyunjiiing)
 ---
+
 
 ### 1) 설치 방법
 
@@ -21,20 +29,27 @@ h.jilluminate@gmail.com
 
 ### 2) 의존성
 
+```
 table_calendar: ^3.0.9
-
 intl: ^0.18.0
-
 http: ^1.0.0
-
 xml: ^6.3.0
-
 fl_chart: ^0.35.0
-
 cloud_firestore: ^4.8.0
+firebase_core: ^2.13.1
+firebase_database: ^10.2.2
+flutter_bloc: ^2.0.0
+equatable: ^1.2.5
+rxdart: ^0.25.0
+```
+
+사용 api
 
 http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50
 
+https://rapidapi.com/malaaddincelik/api/fitness-calculator/details
+
+https://www.foodsafetykorea.go.kr/api/newDatasetDetail.do
 
 ### 3) 사용방법
 
@@ -44,7 +59,8 @@ http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50
 4. 사용자가 입력한 설문을 기반으로 폭식 예측을 하여 push알림을 전송합니다.
 5. 다이어트 관련 레시피를 알고 싶다면 레시피 추천 탭에서 식재료를 입력해보세요.
 6. 체중 그래프를 알고 싶다면 체중 그래프에 입력해보세요!
-7. 꾸준히 운동하여 캐릭터를 업그레이드 해보세요.
+7. 다이어트에 알맞은 일일섭취칼로리량을 구하고 건강한 식단을 짜보세요.
+8. 꾸준히 운동하여 캐릭터를 업그레이드 해보세요.
 
 
 ### 4) 라이선스, 연락처
