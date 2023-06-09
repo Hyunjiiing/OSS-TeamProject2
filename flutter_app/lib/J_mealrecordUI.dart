@@ -146,7 +146,16 @@ class _DietRecordPageState extends State<DietRecordPage> {
             SizedBox(height: 8),
             TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: const Color(0xffFF923F), width: 3,
+                    )),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: const Color(0xffFF923F),
+                    width: 3,
+                  ),
+                ),
                 hintText: '음식을 검색하세요',
               ),
               maxLines: null,
@@ -181,34 +190,36 @@ class _DietRecordPageState extends State<DietRecordPage> {
               ),
             ),
             SizedBox(height: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '총 칼로리: ${totalCalories.toStringAsFixed(1)} kcal',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  '총 탄수화물: ${totalCarbohydrate.toStringAsFixed(1)} g',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  '총 단백질: ${totalProtein.toStringAsFixed(1)} g',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  '총 지방: ${totalFat.toStringAsFixed(1)} g',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  '총 당류: ${totalSugar.toStringAsFixed(1)} g',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  '총 나트륨: ${totalSodium.toStringAsFixed(1)} mg',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '총 칼로리: ${totalCalories.toStringAsFixed(1)} kcal',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '총 탄수화물: ${totalCarbohydrate.toStringAsFixed(1)} g',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '총 단백질: ${totalProtein.toStringAsFixed(1)} g',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '총 지방: ${totalFat.toStringAsFixed(1)} g',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '총 당류: ${totalSugar.toStringAsFixed(1)} g',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '총 나트륨: ${totalSodium.toStringAsFixed(1)} mg',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 16),
             Text(
@@ -542,16 +553,31 @@ class _DietRecordPageState extends State<DietRecordPage> {
               ),
               actions: [
                 TextButton(
+                  child: Text('등록', style: TextStyle(color: Color(0xffFF923F))),
                   onPressed: () {
-                    _submitSurvey();
-                    Navigator.pop(context);
+                    if (mood != null && hasAlcoholAppointment != null && isTraveling != null) {
+                      _submitSurvey();
+                      Navigator.pop(context);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('알림'),
+                            content: Text('모든 질문에 답변해주세요.'),
+                            actions: [
+                              TextButton(
+                                child: Text('확인', style: TextStyle(color: Color(0xffFF923F))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
-                  child: Text(
-                    '등록',
-                    style: TextStyle(
-                      color: Color(0xffFF923F),
-                    ),
-                  ),
                 ),
               ],
             );

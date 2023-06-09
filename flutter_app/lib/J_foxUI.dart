@@ -1,16 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   int level = 0; // 초기 레벨 설정
   int experience = 0; // 초기 경험치 설정
   int cumulativeExerciseTime = 0; // 누적 운동 시간
   int consumedCalories = 0; // 소모 칼로리
+  bool isDataSubmitted = false; // 데이터가 이미 제출되었는지 여부
+
+  @override
+  void initState() {
+    super.initState();
+    checkDataSubmission();
+  }
+
+  void checkDataSubmission() {
+    String userId = "yC5fWuwq5RsfKAL1wgxh"; // 사용자 ID
+    FirebaseFirestore.instance
+        .collection('input_check')
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          var inputValue = snapshot.get('input');
+          bool isSubmitted = inputValue != null ? inputValue as bool : false;
+          isDataSubmitted = isSubmitted;
+        });
+      }
+    });
+  }
 
   void calculateExperience(int exerciseTime) {
+    if (isDataSubmitted) {
+      showDataSubmittedDialog();
+      return;
+    } // 이미 데이터가 제출되었으면 운동 시간 입력을 중지
+
     if (level < 10) {
       experience += (exerciseTime ~/ 40) * 100;
     } else if (level < 20) {
@@ -23,9 +58,15 @@ class MyApp extends StatelessWidget {
       level++;
       experience -= getRequiredExperience(level - 1);
     }
+    setState(() {});
   }
 
   void calculateExperienceFromCalories(int calories) {
+    if (isDataSubmitted) {
+      showDataSubmittedDialog();
+      return; // 이미 데이터가 제출되었으면 하루 소모 칼로리 입력을 중지
+    }
+
     if (calories >= 500) {
       experience += 100;
     }
@@ -34,6 +75,29 @@ class MyApp extends StatelessWidget {
       level++;
       experience -= getRequiredExperience(level - 1);
     }
+    setState(() {});
+  }
+
+  void showDataSubmittedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text('이미 데이터가 제출되었습니다.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('확인'),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Color(0xffFF923F)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   int getRequiredExperience(int level) {
@@ -59,6 +123,12 @@ class MyApp extends StatelessWidget {
             appBar: AppBar(
               title: Text('폭스 키우기'),
               backgroundColor: Color(0xffFF923F),
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.close),
+              ),
             ),
             body: Column(
               children: [
@@ -95,6 +165,20 @@ class MyApp extends StatelessWidget {
                         height: 20,
                         color: Color(0xffFF923F),
                       ),
+                      Positioned(
+                        left: 0,
+                        child: Text(
+                          '0',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: Text(
+                          getRequiredExperience(level).toString(),
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -103,9 +187,12 @@ class MyApp extends StatelessWidget {
                   '누적 운동 시간',
                   style: TextStyle(fontSize: 16),
                 ),
+                SizedBox(height: 20),
+                // 아래 내용을 수정하여 문구를 추가하세요
                 Text(
-                  formatExerciseTime(cumulativeExerciseTime),
-                  style: TextStyle(fontSize: 16),
+                  '운동 시간과 하루 소모 칼로리 입력은 각각 하루에 한 번만 할 수 있으니 유의해주세요!',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -113,13 +200,16 @@ class MyApp extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+                        if (isDataSubmitted)
+                          return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
+
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             int exerciseTime = 0;
 
                             return AlertDialog(
-                              title: Text('운동 입력'),
+                              title: Text('오늘의 운동 시간은?'),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -130,15 +220,52 @@ class MyApp extends StatelessWidget {
                                     onChanged: (value) {
                                       exerciseTime = int.parse(value);
                                     },
+                                    cursorColor: const Color(0xffFF923F),
+                                    decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: const Color(0xffFF923F)),
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.grey),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    calculateExperience(exerciseTime);
-                                    cumulativeExerciseTime += exerciseTime;
-                                    Navigator.pop(context);
+                                    if (exerciseTime >= 360) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('정말이에요?'),
+                                            content: Text('정직한 운동 시간을 입력해주세요.'),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('확인'),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color(0xffFF923F),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      calculateExperience(exerciseTime);
+                                      cumulativeExerciseTime += exerciseTime;
+                                      isDataSubmitted =
+                                          true; // 데이터가 제출되었음을 표시합니다.
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: Text('확인'),
                                   style: ElevatedButton.styleFrom(
@@ -150,7 +277,7 @@ class MyApp extends StatelessWidget {
                           },
                         );
                       },
-                      child: Text('운동 입력'),
+                      child: Text('운동 시간 입력'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffFF923F),
                       ),
@@ -160,13 +287,16 @@ class MyApp extends StatelessWidget {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
+                    if (isDataSubmitted)
+                      return; // 이미 데이터가 제출되었으면 소모 칼로리 입력을 중지합니다.
+
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         int calories = 0;
 
                         return AlertDialog(
-                          title: Text('하루 소모 칼로리 입력'),
+                          title: Text('오늘의 소모 칼로리는?'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -177,14 +307,49 @@ class MyApp extends StatelessWidget {
                                 onChanged: (value) {
                                   calories = int.parse(value);
                                 },
+                                cursorColor: const Color(0xffFF923F),
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xffFF923F)),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                           actions: [
                             ElevatedButton(
                               onPressed: () {
-                                calculateExperienceFromCalories(calories);
-                                Navigator.pop(context);
+                                if (calories >= 2500) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('정말이에요?'),
+                                        content: Text('정직하게 입력해 주세요.'),
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('확인'),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xffFF923F),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  calculateExperienceFromCalories(calories);
+                                  isDataSubmitted = true; // 데이터가 제출되었음을 표시합니다.
+                                  Navigator.pop(context);
+                                }
                               },
                               child: Text('확인'),
                               style: ElevatedButton.styleFrom(
