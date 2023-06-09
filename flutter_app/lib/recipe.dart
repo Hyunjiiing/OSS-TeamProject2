@@ -165,6 +165,12 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                   ),
                 ),
                 SizedBox(height: 8.0),
+                Container( // 이 부분이 추가되었습니다.
+                  height: 1.0,
+                  color: Colors.grey,
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                ),
+                SizedBox(height: 8.0),
                 Text(_recipeDetails),
               ],
             )
