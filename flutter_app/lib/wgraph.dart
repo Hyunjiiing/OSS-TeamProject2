@@ -46,41 +46,52 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           Expanded(
             child: LineChart(
               LineChartData(
-                minX: 0,
-                maxX: weightEntries.length.toDouble() - 1,
-                minY: 0,
-                maxY: 100,
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: weightEntries,
-                    isCurved: true,
-                    dotData: FlDotData(show: false),
-                    colors: [
-                      const Color(0xFFff923f), // 그래프 색상 변경
-                    ],
-                  ),
-                ],
-                titlesData: FlTitlesData(
-                  leftTitles: SideTitles(
-                    showTitles: true,
-                    interval: 5,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.black,
+                  minX: 0,
+                  maxX: weightEntries.length.toDouble() - 1,
+                  minY: 0,
+                  maxY: 100,
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: weightEntries,
+                      isCurved: true,
+                      dotData: FlDotData(show: false),
+                      colors: [
+                        const Color(0xFFff923f), // 그래프 색상 변경
+                      ],
+                    ),
+                  ],
+                  titlesData: FlTitlesData(
+                    leftTitles: SideTitles(
+                      showTitles: true,
+                      interval: 5,
+                      getTextStyles: (value) => const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    bottomTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1,
+                      getTextStyles: (value) => const TextStyle(
+                        color: Colors.black,
+                      ),
+                      getTitles: (value) {
+                        return '${(value + 1).toInt()}일'; // 숫자 뒤에 '일' 추가, 시작 값은 1로 설정
+                      },
+                      reservedSize: 30,
+                      margin: 10,
                     ),
                   ),
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.black,
-                    ),
-                    getTitles: (value) {
-                      return '${(value + 1).toInt()}일'; // 숫자 뒤에 '일' 추가, 시작 값은 1로 설정
+                  gridData: FlGridData(
+                    show: true, // 그리드 라인을 표시
+                    drawHorizontalLine: true, // 수평 라인 표시
+                    horizontalInterval: 20, // 수평 라인 간격 설정
+                    getDrawingVerticalLine: (value) {
+                      return FlLine(
+                        color: const Color(0xFFEAEAEA), // 수직 라인 색상 변경
+                        strokeWidth: 1, // 수직 라인 너비 변경
+                      );
                     },
-                    reservedSize: 30,
-                    margin: 10,
-                  ),
-                ),
+                  )
               ),
             ),
           ),
