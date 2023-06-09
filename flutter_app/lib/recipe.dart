@@ -29,6 +29,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   List<String> _matchingRecipes = [];
   String _selectedRecipe = '';
   String _recipeDetails = '';
+  Color _ingredientIconColor = Colors.grey;
 
   void searchRecipesByIngredient() async {
     String ingredient = _ingredientController.text;
@@ -114,8 +115,21 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFFFF923F), width: 2.0),
                 ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: _ingredientIconColor,
+                ),
               ),
               cursorColor: Color(0xFFFF923F),
+              onTap: () {
+                setState(() {
+                  _ingredientController.text.isNotEmpty
+                      ? _ingredientController.clear()
+                      : _ingredientController.text = '';
+
+                  _ingredientIconColor = _ingredientController.text.isNotEmpty ? Color(0xFFFF923F) : Colors.grey;
+                });
+              },
             ),
 
             ElevatedButton(
@@ -126,6 +140,10 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFFFF923F),
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -151,6 +169,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                       ],
                     ),
                     onTap: () => getRecipeDetails(_matchingRecipes[index]),
+                    trailing: Icon(Icons.arrow_forward),
                   );
                 },
               ),
@@ -176,7 +195,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                 SizedBox(height: 8.0),
                 Container(
                   height: 1.0,
-                  color: Colors.grey,
+                  color: Color(0xFFFF923F),
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 SizedBox(height: 8.0),
