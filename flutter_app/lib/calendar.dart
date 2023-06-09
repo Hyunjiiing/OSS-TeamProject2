@@ -280,37 +280,53 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                   ),
                   SizedBox(height: 16),
                   Text('컨디션'),
-                  TextField(
-                    controller: conditionController,
-                    style: TextStyle(color: const Color(0xFFFF923F)),
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.sentiment_satisfied, color: const Color(0xFFFF923F)),  // Add happy face icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: conditionController,
+                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[2] = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    cursorColor: const Color(0xFFFF923F),
-                    onChanged: (value) {
-                      setState(() {
-                        events[selectedDay]?[2] = value;
-                      });
-                    },
+                    ],
                   ),
                   SizedBox(height: 16),
                   Text('섭취한 물의 양'),
-                  TextField(
-                    controller: waterIntakeController,
-                    style: TextStyle(color: const Color(0xFFFF923F)),
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                  Row(  // Add row to include an icon
+                    children: [
+                      Icon(Icons.local_drink, color: const Color(0xFFFF923F)),  // Add glass icon
+                      SizedBox(width: 8),  // Add spacing
+                      Expanded(
+                        child: TextField(
+                          controller: waterIntakeController,
+                          style: TextStyle(color: const Color(0xFFFF923F)),
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: const Color(0xFFFF923F)),
+                            ),
+                          ),
+                          cursorColor: const Color(0xFFFF923F),
+                          onChanged: (value) {
+                            setState(() {
+                              events[selectedDay]?[3] = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    cursorColor: const Color(0xFFFF923F),
-                    onChanged: (value) {
-                      setState(() {
-                        events[selectedDay]?[3] = value;
-                      });
-                    },
+                    ],
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
