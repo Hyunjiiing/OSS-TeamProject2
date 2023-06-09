@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -75,10 +76,7 @@ class _MyAppState extends State<MyApp> {
             body: Column(
               children: [
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 2 / 5,
+                  height: MediaQuery.of(context).size.height * 2 / 5,
                   child: Image.asset('images/foxcharacter.png'),
                 ),
                 SizedBox(height: 10),
@@ -106,10 +104,7 @@ class _MyAppState extends State<MyApp> {
                     children: [
                       Container(
                         width: (experience / getRequiredExperience(level)) *
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            MediaQuery.of(context).size.width,
                         height: 20,
                         color: Color(0xffFF923F),
                       ),
@@ -177,9 +172,32 @@ class _MyAppState extends State<MyApp> {
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    calculateExperience(exerciseTime);
-                                    cumulativeExerciseTime += exerciseTime;
-                                    Navigator.pop(context);
+                                    if (exerciseTime >= 360) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('정말이에요?'),
+                                            content: Text('정직한 운동 시간을 입력해주세요.'),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('확인'),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Color(0xffFF923F),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      calculateExperience(exerciseTime);
+                                      cumulativeExerciseTime += exerciseTime;
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: Text('확인'),
                                   style: ElevatedButton.styleFrom(
@@ -233,8 +251,31 @@ class _MyAppState extends State<MyApp> {
                           actions: [
                             ElevatedButton(
                               onPressed: () {
-                                calculateExperienceFromCalories(calories);
-                                Navigator.pop(context);
+                                if (calories >= 2500) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('정말이에요?'),
+                                        content: Text('정직하게 입력해 주세요.'),
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('확인'),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(0xffFF923F),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  calculateExperienceFromCalories(calories);
+                                  Navigator.pop(context);
+                                }
                               },
                               child: Text('확인'),
                               style: ElevatedButton.styleFrom(
