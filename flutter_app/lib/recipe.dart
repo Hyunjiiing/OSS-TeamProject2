@@ -13,6 +13,9 @@ class MyApp extends StatelessWidget {
       title: 'Recipe Search',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+          color: Color(0xFFFF923F), // 앱바 색상 수정
+        ),
       ),
       home: RecipeSearchPage(),
     );
@@ -34,7 +37,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   void searchRecipesByIngredient() async {
     String ingredient = _ingredientController.text;
 
-    if (ingredient.isEmpty) { // 수정 시작
+    if (ingredient.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -53,7 +56,7 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
         },
       );
       return;
-    } // 수정 끝
+    }
 
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50'));
 
@@ -117,7 +120,17 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        title: Text(
+          '재료에 따른 식단 레시피', // 텍스트 수정
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true, // 가운데 정렬
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -203,7 +216,6 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
                         ],
                       ),
                       onTap: () => getRecipeDetails(_matchingRecipes[index]),
-                      trailing: null, // Remove the arrow forward icon
                     ),
                   );
                 },
@@ -211,32 +223,14 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            if (_selectedRecipe.isNotEmpty) // 수정 시작
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '레시피: $_selectedRecipe',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    '만드는 방법:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Container(
-                    height: 1.0,
-                    color: Color(0xFFFF923F),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(_recipeDetails),
-                ],
-              ), // 수정 끝
+            Text(
+              '레시피 상세:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(_recipeDetails),
           ],
         ),
       ),
