@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
@@ -18,8 +17,6 @@ class _MyAppState extends State<MyApp> {
   int consumedCalories = 0; // 소모 칼로리
   bool isDataSubmitted = false; // 데이터가 이미 제출되었는지 여부
 
-  DatabaseReference _databaseReference = FirebaseDatabase.instance.reference();
-
   @override
   void initState() {
     super.initState();
@@ -35,16 +32,19 @@ class _MyAppState extends State<MyApp> {
         .then((DocumentSnapshot snapshot) {
       if (snapshot.exists) {
         setState(() {
-          bool isSubmitted = snapshot.get('input');
-          isDataSubmitted = isSubmitted ?? false; // 데이터가 이미 제출되었음을 표시합니다.
+          var inputValue = snapshot.get('input');
+          bool isSubmitted = inputValue != null ? inputValue as bool : false;
+          isDataSubmitted = isSubmitted;
         });
       }
     });
   }
 
-
   void calculateExperience(int exerciseTime) {
-    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
+    if (isDataSubmitted) {
+      showDataSubmittedDialog();
+      return;
+    } // 이미 데이터가 제출되었으면 운동 시간 입력을 중지
 
     if (level < 10) {
       experience += (exerciseTime ~/ 40) * 100;
@@ -62,7 +62,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void calculateExperienceFromCalories(int calories) {
-    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 하루 소모 칼로리 입력을 중지합니다.
+    if (isDataSubmitted) {
+      showDataSubmittedDialog();
+      return; // 이미 데이터가 제출되었으면 하루 소모 칼로리 입력을 중지
+    }
 
     if (calories >= 500) {
       experience += 100;
@@ -73,6 +76,28 @@ class _MyAppState extends State<MyApp> {
       experience -= getRequiredExperience(level - 1);
     }
     setState(() {});
+  }
+
+  void showDataSubmittedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text('이미 데이터가 제출되었습니다.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('확인'),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Color(0xffFF923F)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   int getRequiredExperience(int level) {
@@ -162,9 +187,12 @@ class _MyAppState extends State<MyApp> {
                   '누적 운동 시간',
                   style: TextStyle(fontSize: 16),
                 ),
+                SizedBox(height: 20),
+                // 아래 내용을 수정하여 문구를 추가하세요
                 Text(
-                  formatExerciseTime(cumulativeExerciseTime),
-                  style: TextStyle(fontSize: 16),
+                  '운동 시간과 하루 소모 칼로리 입력은 각각 하루에 한 번만 할 수 있으니 유의해주세요!',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -172,7 +200,8 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
+                        if (isDataSubmitted)
+                          return; // 이미 데이터가 제출되었으면 운동 시간 입력을 중지합니다.
 
                         showDialog(
                           context: context,
@@ -194,10 +223,12 @@ class _MyAppState extends State<MyApp> {
                                     cursorColor: const Color(0xffFF923F),
                                     decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                                        borderSide: BorderSide(
+                                            color: const Color(0xffFF923F)),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey),
+                                        borderSide:
+                                            BorderSide(color: Colors.grey),
                                       ),
                                     ),
                                   ),
@@ -220,7 +251,8 @@ class _MyAppState extends State<MyApp> {
                                                 },
                                                 child: Text('확인'),
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Color(0xffFF923F),
+                                                  backgroundColor:
+                                                      Color(0xffFF923F),
                                                 ),
                                               ),
                                             ],
@@ -230,7 +262,8 @@ class _MyAppState extends State<MyApp> {
                                     } else {
                                       calculateExperience(exerciseTime);
                                       cumulativeExerciseTime += exerciseTime;
-                                      isDataSubmitted = true; // 데이터가 제출되었음을 표시합니다.
+                                      isDataSubmitted =
+                                          true; // 데이터가 제출되었음을 표시합니다.
                                       Navigator.pop(context);
                                     }
                                   },
@@ -254,7 +287,8 @@ class _MyAppState extends State<MyApp> {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    if (isDataSubmitted) return; // 이미 데이터가 제출되었으면 소모 칼로리 입력을 중지합니다.
+                    if (isDataSubmitted)
+                      return; // 이미 데이터가 제출되었으면 소모 칼로리 입력을 중지합니다.
 
                     showDialog(
                       context: context,
@@ -276,7 +310,8 @@ class _MyAppState extends State<MyApp> {
                                 cursorColor: const Color(0xffFF923F),
                                 decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: const Color(0xffFF923F)),
+                                    borderSide: BorderSide(
+                                        color: const Color(0xffFF923F)),
                                   ),
                                   enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
@@ -302,7 +337,8 @@ class _MyAppState extends State<MyApp> {
                                             },
                                             child: Text('확인'),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(0xffFF923F),
+                                              backgroundColor:
+                                                  Color(0xffFF923F),
                                             ),
                                           ),
                                         ],
