@@ -26,13 +26,23 @@ class WeightTrackerPage extends StatefulWidget {
 class _WeightTrackerPageState extends State<WeightTrackerPage> {
   List<FlSpot> weightEntries = [];
   TextEditingController weightController = TextEditingController();
+  double? previousWeight; // 수정: 이전 체중을 저장하기 위한 변수 추가
   bool showErrorMessage = false;
+  bool showWeightChangeMessage = false; // 수정: 체중 변화 메시지를 표시하기 위한 변수 추가
 
   void _saveWeightEntry() {
     setState(() {
       double? weight = double.tryParse(weightController.text);
       if (weight != null) {
         weightEntries.add(FlSpot(weightEntries.length.toDouble(), weight));
+
+        if (previousWeight != null && (weight - previousWeight!).abs() >= 5) {
+          showWeightChangeMessage = true;
+        } else {
+          showWeightChangeMessage = false;
+        }
+
+        previousWeight = weight; // 현재 입력한 체중을 이전 체중으로 저장
         weightController.clear();
         showErrorMessage = false;
       } else {
@@ -55,10 +65,10 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
           ),
         ),
         centerTitle: true,
-        elevation: 8, // 수정: 앱바의 그림자 크기 조정
+        elevation: 8,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0), // 수정: 그래프와 앱바 사이의 간격 조정
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
@@ -127,7 +137,7 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16.0), // 수정: 그래프와 하단 위젯 사이의 간격 조정
+            SizedBox(height: 16.0),
             Column(
               children: [
                 TextField(
@@ -151,6 +161,12 @@ class _WeightTrackerPageState extends State<WeightTrackerPage> {
                 if (showErrorMessage)
                   Text(
                     '체중을 입력해주세요',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                SizedBox(height: 8.0),
+                if (showWeightChangeMessage) // 수정: 체중 변화 메시지 표시 조건 추가
+                  Text(
+                    '체중 변화가 큽니다!',
                     style: TextStyle(color: Colors.red),
                   ),
                 SizedBox(height: 8.0),
