@@ -34,6 +34,27 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
   void searchRecipesByIngredient() async {
     String ingredient = _ingredientController.text;
 
+    if (ingredient.isEmpty) { // 수정 시작
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('검색할 재료를 입력해주세요.'),
+            actions: [
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    } // 수정 끝
+
     var response = await http.get(Uri.parse('http://openapi.foodsafetykorea.go.kr/api/2190a55f6c5d400d9e23/COOKRCP01/xml/1/50'));
 
     if (response.statusCode == 200) {
@@ -190,34 +211,32 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            _selectedRecipe.isNotEmpty
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '레시피: $_selectedRecipe',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+            if (_selectedRecipe.isNotEmpty) // 수정 시작
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '레시피: $_selectedRecipe',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  '만드는 방법:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: 8.0),
+                  Text(
+                    '만드는 방법:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8.0),
-                Container(
-                  height: 1.0,
-                  color: Color(0xFFFF923F),
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
-                ),
-                SizedBox(height: 8.0),
-                Text(_recipeDetails),
-              ],
-            )
-                : Container(),
+                  SizedBox(height: 8.0),
+                  Container(
+                    height: 1.0,
+                    color: Color(0xFFFF923F),
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(_recipeDetails),
+                ],
+              ), // 수정 끝
           ],
         ),
       ),
