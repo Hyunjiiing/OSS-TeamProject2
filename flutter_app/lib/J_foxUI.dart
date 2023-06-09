@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-class MyApp extends StatelessWidget {
+class _MyAppState extends State<MyApp> {
   int level = 0; // 초기 레벨 설정
   int experience = 0; // 초기 경험치 설정
   int cumulativeExerciseTime = 0; // 누적 운동 시간
@@ -23,6 +27,7 @@ class MyApp extends StatelessWidget {
       level++;
       experience -= getRequiredExperience(level - 1);
     }
+    setState(() {});
   }
 
   void calculateExperienceFromCalories(int calories) {
@@ -34,6 +39,7 @@ class MyApp extends StatelessWidget {
       level++;
       experience -= getRequiredExperience(level - 1);
     }
+    setState(() {});
   }
 
   int getRequiredExperience(int level) {
@@ -59,11 +65,20 @@ class MyApp extends StatelessWidget {
             appBar: AppBar(
               title: Text('폭스 키우기'),
               backgroundColor: Color(0xffFF923F),
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.close),
+              ),
             ),
             body: Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 2 / 5,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 2 / 5,
                   child: Image.asset('images/foxcharacter.png'),
                 ),
                 SizedBox(height: 10),
@@ -91,9 +106,26 @@ class MyApp extends StatelessWidget {
                     children: [
                       Container(
                         width: (experience / getRequiredExperience(level)) *
-                            MediaQuery.of(context).size.width,
+                            MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                         height: 20,
                         color: Color(0xffFF923F),
+                      ),
+                      Positioned(
+                        left: 0,
+                        child: Text(
+                          '0',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: Text(
+                          getRequiredExperience(level).toString(),
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
                     ],
                   ),
