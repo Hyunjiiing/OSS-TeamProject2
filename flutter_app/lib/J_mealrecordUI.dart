@@ -553,16 +553,31 @@ class _DietRecordPageState extends State<DietRecordPage> {
               ),
               actions: [
                 TextButton(
+                  child: Text('등록', style: TextStyle(color: Color(0xffFF923F))),
                   onPressed: () {
-                    _submitSurvey();
-                    Navigator.pop(context);
+                    if (mood != null && hasAlcoholAppointment != null && isTraveling != null) {
+                      _submitSurvey();
+                      Navigator.pop(context);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('알림'),
+                            content: Text('모든 질문에 답변해주세요.'),
+                            actions: [
+                              TextButton(
+                                child: Text('확인', style: TextStyle(color: Color(0xffFF923F))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
-                  child: Text(
-                    '등록',
-                    style: TextStyle(
-                      color: Color(0xffFF923F),
-                    ),
-                  ),
                 ),
               ],
             );
