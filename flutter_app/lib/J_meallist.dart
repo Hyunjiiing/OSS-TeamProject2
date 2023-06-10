@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class MealList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late Stream<QuerySnapshot> _stream;
   TextEditingController _searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +40,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.close),
+          child: Icon(Icons.arrow_back),
         ),
       ),
       body: Column(
@@ -66,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
-              ),
+                ),
               ),
               onChanged: (value) {
                 _onSearchChanged(value);
@@ -76,7 +68,8 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: _stream,
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text('데이터 가져오기에 오류가 발생했습니다.');
                 }
@@ -86,8 +79,10 @@ class _HomePageState extends State<HomePage> {
                 }
 
                 return ListView(
-                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
                     final documentId = document.id;
 
                     return Dismissible(
