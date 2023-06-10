@@ -1,6 +1,7 @@
 import 'package:effectui/J_mealrecordUI.dart';
 import 'package:effectui/wgraph.dart';
 import 'package:flutter/material.dart';
+
 import 'J_effectUI.dart';
 import 'J_meallist.dart';
 
@@ -60,8 +61,6 @@ class MainPage extends StatelessWidget {
               child: Text('식단 입력'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFff923f),
-                primary: Colors.blue,
-                onPrimary: Colors.white,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -78,6 +77,8 @@ class MainPage extends StatelessWidget {
               child: Text('식단기록'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFff923f),
+                primary: Colors.blue,
+                onPrimary: Colors.white,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -92,9 +93,10 @@ class MainPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                // 버튼이 눌렸을 때 수행할 작업
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WeightTrackerApp()));
               },
               child: Text('체중 그래프'),
               style: ElevatedButton.styleFrom(
@@ -111,8 +113,10 @@ class MainPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // 버튼이 눌렸을 때 수행할 작업
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DietCalculatorScreen()));
               },
               child: Text('일일 섭취량'),
               style: ElevatedButton.styleFrom(
