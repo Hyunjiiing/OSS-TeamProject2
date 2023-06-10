@@ -24,3 +24,8 @@ def send_prediction_data():
     ref = db.collection('data')
     docs = ref.get()    
     df = pd.read_csv('./data.csv')
+
+    for doc in docs:
+        date = doc.to_dict()['DATE']
+        if date not in list(df['DATE']):
+            predict_result = predict_voracity(doc.to_dict())
