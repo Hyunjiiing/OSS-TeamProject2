@@ -17,6 +17,8 @@
 ---|---|---|
 [KangJiUng](https://github.com/KangJiUng) | [LSA31](https://github.com/LSA31) | [Hyunjiiing](https://github.com/Hyunjiiing)
 ---
+zszsm2364@naver.com | tmddk811@naver.com | pigcalfoh@naver.com
+---
 
 
 ### 1) 설치 방법
