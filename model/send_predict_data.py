@@ -29,3 +29,10 @@ def send_prediction_data():
         date = doc.to_dict()['DATE']
         if date not in list(df['DATE']):
             predict_result = predict_voracity(doc.to_dict())
+            if predict_result:
+                title="폭식 위험!"
+                body="Sad.."
+
+
+
+            
