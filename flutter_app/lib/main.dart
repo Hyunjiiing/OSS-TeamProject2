@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '다이어트 앱',
+      title: 'FOX',
       theme: ThemeData(
         primaryColor: Color(0xFFff923f),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -57,10 +57,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  TabController? controller;
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
       _handleMessage(initialMessage);
@@ -83,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       final snackBar;
-      snackBar = SnackBar(content: Text(message.notification!.title.toString()));
+      snackBar =
+          SnackBar(content: Text(message.notification!.title.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
 
@@ -127,7 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: TabBarView(
         children: <Widget>[
           MainPage(),
-
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
