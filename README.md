@@ -2,7 +2,7 @@
 
 ### 앱 설명
 
-폭식 타이밍을 예측하여 사용자에게 알림을 보내 식단 관리에 도움을 주는 다이어트앱입니다. 
+폭식 타이밍을 예측하여 사용자에게 알림:alarm_clock: 을 보내 식단 관리에 도움을 주는 다이어트앱입니다. 
 
 그 외에도 다이어트앱에 필수적인 기능(식단 기록, 물/영양제 기록, 캘린더뷰, 체중그래프 등)뿐만 아니라 
 
@@ -13,7 +13,7 @@
 
 ### contributors
 
-강지웅 | 이승아 | 오현지
+강지웅 :trollface: | 이승아 🍘 | 오현지 👻
 ---|---|---|
 [KangJiUng](https://github.com/KangJiUng) | [LSA31](https://github.com/LSA31) | [Hyunjiiing](https://github.com/Hyunjiiing)
 zszsm2364@naver.com | tmddk811@naver.com | pigcalfoh@naver.com
