@@ -13,3 +13,8 @@ def predict_voracity(doc) -> int:
     train_X = data_df.drop(['DATE','voracity'], axis=1)
     train_Y = data_df['voracity']
     doc_df = pd.DataFrame(doc, index=[0], columns=train_X.columns)
+    
+    rf = RandomForestClassifier()
+    rf.fit(train_X, train_Y)
+    res = rf.predict(doc_df)
+    return res
