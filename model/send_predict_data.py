@@ -32,7 +32,6 @@ def send_prediction_data():
             if predict_result:
                 title="폭식 위험!"
                 body="Sad.."
-
-
-
-            
+            else:
+                title="좋은 하루입니다!"
+                body="Good!"
