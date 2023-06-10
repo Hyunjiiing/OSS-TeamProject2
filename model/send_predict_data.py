@@ -18,3 +18,9 @@ def predict_voracity(doc) -> int:
     rf.fit(train_X, train_Y)
     res = rf.predict(doc_df)
     return res
+
+
+def send_prediction_data():
+    ref = db.collection('data')
+    docs = ref.get()    
+    df = pd.read_csv('./data.csv')
