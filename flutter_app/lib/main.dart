@@ -144,11 +144,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ],
         controller: controller,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+      bottomNavigationBar: TabBar(
+        tabs: const <Tab>[
+          Tab(
             icon: Icon(Icons.home),
-            label: '메인 페이지',
+            child: Text('메인 페이지'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.recommend),
