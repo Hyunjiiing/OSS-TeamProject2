@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color(0xFFFF923F),
-        brightness: Provider.of<Settings>(context).isDarkMode
+        /*brightness: Provider.of<Settings>(context).isDarkMode
             ? Brightness.dark
-            : Brightness.light,
+            : Brightness.light,*/
       ),
       home: Scaffold(
         appBar: AppBar(title: Text('설정')),
