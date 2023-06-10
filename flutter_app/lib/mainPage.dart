@@ -72,14 +72,12 @@ class MainPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // 버튼이 눌렸을 때 수행할 작업
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MealList()));
               },
-              child: Text('간식!'),
+              child: Text('식단기록'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFff923f),
-                primary: Colors.blue,
-                onPrimary: Colors.white,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
