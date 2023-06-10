@@ -30,7 +30,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
 
   TextEditingController menstrualPeriodController = TextEditingController();
   TextEditingController nutritionalSupplementsController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController conditionController = TextEditingController();
   TextEditingController waterIntakeController = TextEditingController();
 
@@ -230,7 +230,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       children: [
                         Icon(Icons.water_drop,
                             color:
-                            const Color(0xFFFF923F)), // Add water drop icon
+                                const Color(0xFFFF923F)), // Add water drop icon
                         SizedBox(width: 8), // Add spacing
                         Expanded(
                           child: TextField(
@@ -239,7 +239,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                             decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                 borderSide:
-                                BorderSide(color: const Color(0xFFFF923F)),
+                                    BorderSide(color: const Color(0xFFFF923F)),
                               ),
                             ),
                             cursorColor: const Color(0xFFFF923F),
@@ -267,7 +267,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                             decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                 borderSide:
-                                BorderSide(color: const Color(0xFFFF923F)),
+                                    BorderSide(color: const Color(0xFFFF923F)),
                               ),
                             ),
                             cursorColor: const Color(0xFFFF923F),
@@ -287,7 +287,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                       children: [
                         Icon(Icons.sentiment_satisfied,
                             color:
-                            const Color(0xFFFF923F)), // Add happy face icon
+                                const Color(0xFFFF923F)), // Add happy face icon
                         SizedBox(width: 8), // Add spacing
                         Expanded(
                           child: TextField(
@@ -296,7 +296,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                             decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                 borderSide:
-                                BorderSide(color: const Color(0xFFFF923F)),
+                                    BorderSide(color: const Color(0xFFFF923F)),
                               ),
                             ),
                             cursorColor: const Color(0xFFFF923F),
@@ -324,7 +324,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
                             decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                 borderSide:
-                                BorderSide(color: const Color(0xFFFF923F)),
+                                    BorderSide(color: const Color(0xFFFF923F)),
                               ),
                             ),
                             cursorColor: const Color(0xFFFF923F),

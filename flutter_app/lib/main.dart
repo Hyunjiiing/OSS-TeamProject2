@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(
-        title: '나의 다이어트 앱',
+        title: 'FOX',
       ),
     );
   }
@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   TabController? controller;
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
       _handleMessage(initialMessage);
@@ -77,13 +77,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = TabController(length: 3, vsync: this);
-    setupInteractedMessage();
-  }
 
-  @override
-  dispose() {
-    controller!.dispose();
-    super.dispose();
+    setupInteractedMessage();
   }
 
   @override
@@ -96,6 +91,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
 
+    @override
+    dispose() {
+      controller!.dispose();
+      super.dispose();
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -104,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         leading: IconButton(
           icon: Icon(Icons.settings),
           onPressed: () {
-            // 설정 페이지로 이동
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Settings()));
           },
@@ -114,7 +114,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               margin: EdgeInsets.all(10),
               child: TextButton(
                 onPressed: () {
-                  // 버튼이 눌렸을 때 수행할 작업
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LevelUp()));
                 },

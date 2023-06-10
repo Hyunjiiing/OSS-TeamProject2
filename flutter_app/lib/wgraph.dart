@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-void main() {
-  runApp(WeightTrackerApp());
-}
-
 class WeightTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
