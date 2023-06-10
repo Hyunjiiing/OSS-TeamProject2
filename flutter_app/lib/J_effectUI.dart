@@ -1,26 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '다이어트를 위한 일일섭취칼로리량 구하기',
-      theme: ThemeData(
-        primaryColor: Color(0xffFF923F),
-        appBarTheme: AppBarTheme(
-          color: Color(0xffFF923F),
-        ),
-      ),
-      home: DietCalculatorScreen(),
-    );
-  }
-}
-
 class DietCalculatorScreen extends StatefulWidget {
   @override
   _DietCalculatorScreenState createState() => _DietCalculatorScreenState();
@@ -96,7 +76,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
       final String calorie = _calorieController.text;
       final int userCalorie = int.parse(calorie);
       final String level =
-      _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
+          _getActivityLevel(activityLevelOptions[_activityLevel! - 1]);
 
       final String apiUrl =
           'https://fitness-calculator.p.rapidapi.com/dailycalorie?age=$parsedAge&gender=$_gender&height=$parsedHeight&weight=$parsedWeight&activitylevel=$level';
@@ -107,7 +87,7 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
         apiUri,
         headers: {
           'X-RapidAPI-Key':
-          '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
+              '7befde939bmshf1936e77aba73e1p1b4eebjsn4982a4ae4831',
           'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com',
         },
       );
@@ -116,11 +96,11 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
         final String responseBody = response.body;
         final int weightLossIndex = responseBody.indexOf('"Weight loss"');
         final int caloryIndex =
-        responseBody.indexOf('"calory"', weightLossIndex);
+            responseBody.indexOf('"calory"', weightLossIndex);
         final int colonIndex = responseBody.indexOf(':', caloryIndex);
         final int endIndex = responseBody.indexOf('}', caloryIndex);
         final String weightLossCalorie =
-        responseBody.substring(colonIndex + 1, endIndex).trim();
+            responseBody.substring(colonIndex + 1, endIndex).trim();
 
         try {
           final double weightLossCalorieValue = double.parse(weightLossCalorie);
@@ -167,191 +147,201 @@ class _DietCalculatorScreenState extends State<DietCalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('다이어트를 위한 일일섭취칼로리량'),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.close),
+    return MaterialApp(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xffFF923F),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16.0),
-                Text('성별'),
-                DropdownButton<String>(
-                  value: _gender,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _gender = value;
-                    });
-                  },
-                  items: genderOptions.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 16.0),
-                Text('나이'),
-                TextFormField(
-                  focusNode: _ageFocusNode,
-                  controller: _ageController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '나이를 입력하세요';
-                    }
-                    return null;
-                  },
-                  cursorColor: const Color(0xffFF923F),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: const Color(0xffFF923F)),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('다이어트를 위한 일일섭취칼로리량'),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.0),
+                  Text('성별'),
+                  DropdownButton<String>(
+                    value: _gender,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _gender = value;
+                      });
+                    },
+                    items: genderOptions.map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Text('키 (cm)'),
-                TextFormField(
-                  focusNode: _heightFocusNode,
-                  controller: _heightController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '키를 입력하세요';
-                    }
-                    return null;
-                  },
-                  cursorColor: const Color(0xffFF923F),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: const Color(0xffFF923F)),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text('체중 (kg)'),
-                TextFormField(
-                  focusNode: _weightFocusNode,
-                  controller: _weightController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '체중을 입력하세요';
-                    }
-                    return null;
-                  },
-                  cursorColor: const Color(0xffFF923F),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: const Color(0xffFF923F)),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text('활동 수준'),
-                DropdownButton<int>(
-                  value: _activityLevel,
-                  onChanged: (int? value) {
-                    setState(() {
-                      _activityLevel = value;
-                    });
-                  },
-                  items: activityLevelOptions
-                      .asMap()
-                      .entries
-                      .map(
-                        (entry) => DropdownMenuItem<int>(
-                      value: entry.key + 1,
-                      child: Text(entry.value),
-                    ),
-                  )
-                      .toList(),
-                ),
-                SizedBox(height: 16.0),
-                Text('하루에 먹을 칼로리'),
-                TextFormField(
-                  focusNode: _calorieFocusNode,
-                  controller: _calorieController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '하루에 먹을 칼로리를 입력하세요';
-                    }
-                    return null;
-                  },
-                  cursorColor: const Color(0xffFF923F),
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: const Color(0xffFF923F)),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Center(
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    child: ElevatedButton(
-                      onPressed: _calculateDailyCalorie,
-                      child: Text('결과보기'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
+                  SizedBox(height: 16.0),
+                  Text('나이'),
+                  TextFormField(
+                    focusNode: _ageFocusNode,
+                    controller: _ageController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '나이를 입력하세요';
+                      }
+                      return null;
+                    },
+                    cursorColor: const Color(0xffFF923F),
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
                       ),
                     ),
                   ),
-                ),
-                if (!_isFormValid) Text('모든 필드를 작성해주세요.', style: TextStyle(color: Colors.red)),
-                if (!_isApiCallSuccessful) Text('API 호출에 문제가 발생했습니다.', style: TextStyle(color: Colors.red)),
-                SizedBox(height: 16.0),
-                SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      '권장일일섭취칼로리량: $_apiResponse kcal',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ],
-                ),
-                Center(
-                  child: SizedBox(
-                    child: Text(
-                      '당신의 하루 섭취 칼로리량은? $_comparisonMessage',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: SizedBox(
-                    child: Text(
-                      '다이어트를 위한 권장 탄단지 비율은 5:3:2 입니다!',
-                      style: TextStyle(fontSize: 16.0),
+                  SizedBox(height: 16.0),
+                  Text('키 (cm)'),
+                  TextFormField(
+                    focusNode: _heightFocusNode,
+                    controller: _heightController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '키를 입력하세요';
+                      }
+                      return null;
+                    },
+                    cursorColor: const Color(0xffFF923F),
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 16.0),
+                  Text('체중 (kg)'),
+                  TextFormField(
+                    focusNode: _weightFocusNode,
+                    controller: _weightController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '체중을 입력하세요';
+                      }
+                      return null;
+                    },
+                    cursorColor: const Color(0xffFF923F),
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text('활동 수준'),
+                  DropdownButton<int>(
+                    value: _activityLevel,
+                    onChanged: (int? value) {
+                      setState(() {
+                        _activityLevel = value;
+                      });
+                    },
+                    items: activityLevelOptions
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => DropdownMenuItem<int>(
+                            value: entry.key + 1,
+                            child: Text(entry.value),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text('하루에 먹을 칼로리'),
+                  TextFormField(
+                    focusNode: _calorieFocusNode,
+                    controller: _calorieController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '하루에 먹을 칼로리를 입력하세요';
+                      }
+                      return null;
+                    },
+                    cursorColor: const Color(0xffFF923F),
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: const Color(0xffFF923F)),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Center(
+                    child: Container(
+                      color: Theme.of(context).primaryColor,
+                      child: ElevatedButton(
+                        onPressed: _calculateDailyCalorie,
+                        child: Text('결과보기'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (!_isFormValid)
+                    Text('모든 필드를 작성해주세요.', style: TextStyle(color: Colors.red)),
+                  if (!_isApiCallSuccessful)
+                    Text('API 호출에 문제가 발생했습니다.',
+                        style: TextStyle(color: Colors.red)),
+                  SizedBox(height: 16.0),
+                  SizedBox(height: 16.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        '권장일일섭취칼로리량: $_apiResponse kcal',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: SizedBox(
+                      child: Text(
+                        '당신의 하루 섭취 칼로리량은? $_comparisonMessage',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: SizedBox(
+                      child: Text(
+                        '다이어트를 위한 권장 탄단지 비율은 5:3:2 입니다!',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
