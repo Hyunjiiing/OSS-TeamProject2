@@ -21,11 +21,17 @@
 
 ### 1) 설치 방법
 
-h.jilluminate@gmail.com
+- apk 파일 받기
+  h.jilluminate@gmail.com
 
-위에 팀장님 메일로 해당 github링크와 fox앱 다운 받고 싶다고 요청하시면
+  위에 팀장님 메일로 해당 github링크와 fox앱 다운 받고 싶다고 요청하시면
 
-메일을 통해 APK파일로 보내드립니다.
+  메일을 통해 APK파일로 보내드립니다.
+
+- github pull하여 다운하기
+1. flutter 환경 설정을 완료한다. (참고링크 : https://youtu.be/usE9IKaogDU)
+2. pubspec.yaml 파일에서 pubget 버튼을 누른다.
+3. 실행하여 사용한다.
 
 ### 2) 의존성
 
