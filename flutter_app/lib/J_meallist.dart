@@ -124,12 +124,14 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          print("hi");
+          /*
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => NewDietRecordScreen(), //화면 연결에서 수정
             ),
-          );
+          );*/
         },
         child: Icon(Icons.add),
       ),
