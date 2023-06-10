@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late Stream<QuerySnapshot> _stream;
   TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -80,9 +81,9 @@ class _HomePageState extends State<HomePage> {
 
                 return ListView(
                   children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                  snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
-                        document.data() as Map<String, dynamic>;
+                    document.data() as Map<String, dynamic>;
                     final documentId = document.id;
 
                     return Dismissible(
