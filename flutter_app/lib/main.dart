@@ -76,7 +76,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    controller = TabController(length: 3, vsync: this);
     setupInteractedMessage();
+  }
+
+  @override
+  dispose() {
+    controller!.dispose();
+    super.dispose();
   }
 
   @override
