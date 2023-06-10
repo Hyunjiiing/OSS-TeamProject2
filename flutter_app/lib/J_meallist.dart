@@ -10,6 +10,16 @@ class MealList extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xffFF923F),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffFF923F)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          labelStyle: TextStyle(color: Colors.grey),
+          prefixStyle: TextStyle(color: Colors.grey),
+        ),
       ),
       home: HomePage(),
     );
@@ -53,10 +63,12 @@ class _HomePageState extends State<HomePage> {
               cursorColor: const Color(0xffFF923F),
               decoration: InputDecoration(
                 labelText: '음식 이름 검색',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: const Color(0xffFF923F)),
-                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Color(0xffFF923F),
+                ),                border: OutlineInputBorder(
+                borderSide: BorderSide(color: const Color(0xffFF923F)),
+              ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
                 ),
