@@ -159,10 +159,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             child: Text('캘린더 뷰'),
           ),
         ],
-        selectedItemColor: Color(0xFFff923f),
-        onTap: (index) {
-          // 화면 이동 처리 구현 (메인 페이지, 레시피 추천 페이지, 캘린더 뷰 페이지)
-        },
+        unselectedLabelColor: Colors.grey,
+        labelColor: Color(0xFFff923f),
+        indicatorColor: Color(0xFFff923f),
+        controller: controller,
       ),
     );
   }
