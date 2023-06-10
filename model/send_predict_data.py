@@ -42,3 +42,9 @@ def send_prediction_data():
                     ),
                     token="your private token"
             )
+            result = messaging.send(message)
+            print(result)
+            break
+
+if __name__ == '__main__':
+    send_prediction_data()
