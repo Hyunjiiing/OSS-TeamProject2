@@ -150,13 +150,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             icon: Icon(Icons.home),
             child: Text('메인 페이지'),
           ),
-          BottomNavigationBarItem(
+          Tab(
             icon: Icon(Icons.recommend),
-            label: '레시피 추천',
+            child: Text('레시피 추천'),
           ),
-          BottomNavigationBarItem(
+          Tab(
             icon: Icon(Icons.calendar_today),
-            label: '캘린더 뷰',
+            child: Text('캘린더 뷰'),
           ),
         ],
         selectedItemColor: Color(0xFFff923f),
