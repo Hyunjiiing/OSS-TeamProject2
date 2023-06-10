@@ -71,9 +71,16 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     setupInteractedMessage();
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      final snackBar;
+      snackBar = SnackBar(content: Text(message.notification!.title.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFff923f),
