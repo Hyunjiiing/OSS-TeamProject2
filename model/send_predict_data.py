@@ -35,3 +35,10 @@ def send_prediction_data():
             else:
                 title="좋은 하루입니다!"
                 body="Good!"
+            message = messaging.Message(
+                    notification=messaging.Notification(
+                        title=title,
+                        body=body,
+                    ),
+                    token="your private token"
+            )
