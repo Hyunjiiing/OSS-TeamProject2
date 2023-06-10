@@ -13,15 +13,15 @@ class _MealListState extends State<MealList> {
   @override
   void initState() {
     super.initState();
-    _stream = FirebaseFirestore.instance.collection('meal_record').orderBy('날짜').snapshots();
+    _stream = FirebaseFirestore.instance.collection('meal_record').orderBy('date').snapshots();
   }
 
   void _onSearchChanged(String value) {
     setState(() {
       _stream = FirebaseFirestore.instance
           .collection('meal_record')
-          .where('음식', isEqualTo: value)
-          .orderBy('날짜')
+          .where('contents', isEqualTo: value)
+          .orderBy('date')
           .snapshots();
     });
   }
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _stream = firestore.collection('식단').orderBy('날짜').snapshots();
+    _stream = firestore.collection('meal_record').orderBy('date').snapshots();
     _searchController.addListener(_onSearchControllerChanged);
   }
 
@@ -132,8 +132,15 @@ class _HomePageState extends State<HomePage> {
                   itemCount: _mealRecords.length,
                   itemBuilder: (BuildContext context, int index) {
                     DocumentSnapshot document = _mealRecords[index];
-                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                    Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
+
+                    if (data == null) {
+                      return Container(); // 또는 Null 값을 처리할 다른 위젯을 반환합니다.
+                    }
+
                     final documentId = document.id;
+                    final content = data['contents'] ?? ''; // Null 값인 경우 대체 값으로 빈 문자열 사용
+                    final date = data['date']?.toDate()?.toString() ?? ''; // Null 값인 경우 대체 값으로 빈 문자열 사용
 
                     return Dismissible(
                       key: Key(documentId),
@@ -151,8 +158,8 @@ class _HomePageState extends State<HomePage> {
                         FirebaseFirestore.instance.collection('meal_record').doc(documentId).delete();
                       },
                       child: ListTile(
-                        title: Text(data['음식']),
-                        subtitle: Text(data['설명']),
+                        title: Text(content),
+                        subtitle: Text(date),
                         trailing: Icon(Icons.edit),
                       ),
                     );
