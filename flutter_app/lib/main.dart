@@ -2,7 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+
 import 'mainPage.dart';
+import 'recipe.dart';
+import 'calendar.dart';
+import 'settings.dart';
+import 'J_foxUI.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       snackBar = SnackBar(content: Text(message.notification!.title.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFff923f),
