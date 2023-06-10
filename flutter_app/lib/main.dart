@@ -139,7 +139,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: TabBarView(
         children: <Widget>[
           MainPage(),
+          Recipe(),
+          Calender(),
         ],
+        controller: controller,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
