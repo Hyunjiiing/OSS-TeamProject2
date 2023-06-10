@@ -2,22 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class Recipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recipe Search',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-          color: Color(0xFFFF923F), // 앱바 색상 수정
-        ),
-      ),
-      home: RecipeSearchPage(),
+    return Container(
+      child: RecipeSearchPage(),
     );
   }
 }
@@ -119,19 +108,8 @@ class _RecipeSearchPageState extends State<RecipeSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '재료에 따른 식단 레시피', // 텍스트 수정
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true, // 가운데 정렬
-      ),
-      body: Padding(
+    return Container(
+      child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -2,7 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+
 import 'mainPage.dart';
+import 'recipe.dart';
+import 'calendar.dart';
+import 'settings.dart';
+import 'J_foxUI.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,13 +36,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '다이어트 앱',
+      title: 'FOX',
       theme: ThemeData(
         primaryColor: Color(0xFFff923f),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(
-        title: '나의 다이어트 앱',
+        title: 'FOX',
       ),
     );
   }
@@ -52,7 +57,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  TabController? controller;
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
     await FirebaseMessaging.instance.getInitialMessage();
@@ -70,6 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    controller = TabController(length: 3, vsync: this);
+
     setupInteractedMessage();
   }
 
@@ -78,18 +86,27 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       final snackBar;
-      snackBar = SnackBar(content: Text(message.notification!.title.toString()));
+      snackBar =
+          SnackBar(content: Text(message.notification!.title.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
-    
+
+    @override
+    dispose() {
+      controller!.dispose();
+      super.dispose();
+    }
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFFff923f),
         title: Text(widget.title),
         leading: IconButton(
           icon: Icon(Icons.settings),
           onPressed: () {
-            // 설정 페이지로 이동
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Settings()));
           },
         ),
         actions: [
@@ -97,9 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: EdgeInsets.all(10),
               child: TextButton(
                 onPressed: () {
-                  // 버튼이 눌렸을 때 수행할 작업
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LevelUp()));
                 },
                 child: Text(
                   '레벨업 하러 가기!',
@@ -122,28 +138,30 @@ class _MyHomePageState extends State<MyHomePage> {
       body: TabBarView(
         children: <Widget>[
           MainPage(),
-
+          Recipe(),
+          Calender(),
         ],
+        controller: controller,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+      bottomNavigationBar: TabBar(
+        tabs: const <Tab>[
+          Tab(
             icon: Icon(Icons.home),
-            label: '메인 페이지',
+            child: Text('메인 페이지'),
           ),
-          BottomNavigationBarItem(
+          Tab(
             icon: Icon(Icons.recommend),
-            label: '레시피 추천',
+            child: Text('레시피 추천'),
           ),
-          BottomNavigationBarItem(
+          Tab(
             icon: Icon(Icons.calendar_today),
-            label: '캘린더 뷰',
+            child: Text('캘린더 뷰'),
           ),
         ],
-        selectedItemColor: Color(0xFFff923f),
-        onTap: (index) {
-          // 화면 이동 처리 구현 (메인 페이지, 레시피 추천 페이지, 캘린더 뷰 페이지)
-        },
+        unselectedLabelColor: Colors.grey,
+        labelColor: Color(0xFFff923f),
+        indicatorColor: Color(0xFFff923f),
+        controller: controller,
       ),
     );
   }

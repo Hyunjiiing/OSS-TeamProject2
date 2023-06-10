@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class Meal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -84,19 +77,14 @@ class _DietRecordPageState extends State<DietRecordPage> {
 
   // API 관련 변수
   final String apiKey = '060aad69e43b44f39027';
-  final String baseUrl = 'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
+  final String baseUrl =
+      'http://openapi.foodsafetykorea.go.kr/api/sample/I2790/xml';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFF923F),
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: Text('오늘의 식단 기록하기'),
         actions: [
           TextButton(
@@ -148,8 +136,9 @@ class _DietRecordPageState extends State<DietRecordPage> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: const Color(0xffFF923F), width: 3,
-                    )),
+                  color: const Color(0xffFF923F),
+                  width: 3,
+                )),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: const Color(0xffFF923F),
@@ -555,7 +544,9 @@ class _DietRecordPageState extends State<DietRecordPage> {
                 TextButton(
                   child: Text('등록', style: TextStyle(color: Color(0xffFF923F))),
                   onPressed: () {
-                    if (mood != null && hasAlcoholAppointment != null && isTraveling != null) {
+                    if (mood != null &&
+                        hasAlcoholAppointment != null &&
+                        isTraveling != null) {
                       _submitSurvey();
                       Navigator.pop(context);
                     } else {
@@ -567,7 +558,8 @@ class _DietRecordPageState extends State<DietRecordPage> {
                             content: Text('모든 질문에 답변해주세요.'),
                             actions: [
                               TextButton(
-                                child: Text('확인', style: TextStyle(color: Color(0xffFF923F))),
+                                child: Text('확인',
+                                    style: TextStyle(color: Color(0xffFF923F))),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
