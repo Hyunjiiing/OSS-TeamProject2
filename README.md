@@ -28,10 +28,11 @@
 
   메일을 통해 APK파일로 보내드립니다.
 
-- github pull하여 다운하기
+- github pull하여 사용하기
 1. flutter 환경 설정을 완료한다. (참고링크 : https://youtu.be/usE9IKaogDU)
 2. pubspec.yaml 파일에서 pubget 버튼을 누른다.
 3. 실행하여 사용한다.
+4. 앱 실행 후 android studio 콘솔창에서 기기의 토큰이 출력된 것을 확인하고 python코드 "your private key"부분에 붙여넣으면 폭식 알람을 받을 수 있다.
 
 ### 2) 의존성
 
