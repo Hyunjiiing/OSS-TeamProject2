@@ -16,7 +16,6 @@
 강지웅 | 이승아 | 오현지
 ---|---|---|
 [KangJiUng](https://github.com/KangJiUng) | [LSA31](https://github.com/LSA31) | [Hyunjiiing](https://github.com/Hyunjiiing)
----|---|---|
 zszsm2364@naver.com | tmddk811@naver.com | pigcalfoh@naver.com
 ---
 
@@ -50,6 +49,7 @@ firebase_database: ^10.2.2
 flutter_bloc: ^2.0.0
 equatable: ^1.2.5
 rxdart: ^0.25.0
+firebase_messaging: ^14.6.2
 ```
 
 사용 api
