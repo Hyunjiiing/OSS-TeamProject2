@@ -1,6 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -128,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
                 ElevatedButton(
@@ -147,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
                 ElevatedButton(
@@ -166,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
                 ElevatedButton(
@@ -185,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
               ],
@@ -209,7 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
                 ElevatedButton(
@@ -228,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   ),
                 ),
               ],
