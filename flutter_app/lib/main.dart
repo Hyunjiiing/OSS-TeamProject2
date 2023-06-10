@@ -57,9 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
     await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
-      //_handleMessage(initialMessage);
+      _handleMessage(initialMessage);
     }
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    print(message.notification!.title.toString());
   }
 
   @override
