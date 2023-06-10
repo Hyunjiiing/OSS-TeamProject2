@@ -97,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFFff923f),
         title: Text(widget.title),
@@ -104,6 +105,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           icon: Icon(Icons.settings),
           onPressed: () {
             // 설정 페이지로 이동
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Settings()));
           },
         ),
         actions: [
@@ -112,8 +115,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               child: TextButton(
                 onPressed: () {
                   // 버튼이 눌렸을 때 수행할 작업
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('버튼이 눌렸습니다.')));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LevelUp()));
                 },
                 child: Text(
                   '레벨업 하러 가기!',
