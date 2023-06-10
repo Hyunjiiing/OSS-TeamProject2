@@ -139,8 +139,16 @@ class _HomePageState extends State<HomePage> {
                     }
 
                     final documentId = document.id;
-                    final content = data['contents'] ?? ''; // Null 값인 경우 대체 값으로 빈 문자열 사용
-                    final date = data['date']?.toDate()?.toString() ?? ''; // Null 값인 경우 대체 값으로 빈 문자열 사용
+                    final List<dynamic> contents = data['contents'] ?? <String>[]; // Null 값인 경우 빈 배열로 초기화
+
+                    String content = ''; // contents 필드에서 가져올 문자열
+
+                    if (contents.isNotEmpty && contents.every((element) => element is String)) {
+                      content = contents.join(', '); // 배열 요소를 쉼표로 구분하여 문자열로 결합
+                    }
+
+                    final dateString = data['date'] as String?; // Firestore에서 String 타입으로 가져옴
+                    final date = DateTime.tryParse(dateString ?? ''); // String을 DateTime으로 변환
 
                     return Dismissible(
                       key: Key(documentId),
@@ -159,10 +167,11 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: ListTile(
                         title: Text(content),
-                        subtitle: Text(date),
+                        subtitle: Text(date != null ? date.toString() : ''),
                         trailing: Icon(Icons.edit),
                       ),
                     );
+
                   },
                 );
               },
